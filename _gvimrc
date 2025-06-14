@@ -1,0 +1,44 @@
+" 
+"                                                                          
+"                                                                          
+"                                                                          
+"                              gg                                          
+"                              ''                                          
+"    ,gggg,gg     ggg    gg    gg    ,ggg,,ggg,,ggg,    ,gggggg,    ,gggg, 
+"   dP'  'Y8I    d8'Yb   88bg  88   ,8' '8P' '8P' '8,   dP''''8I   dP'  'Yb
+"  i8'    ,8I   dP  I8   8I    88   I8   8I   8I   8I  ,8'    8I  i8'      
+"  d8,   ,d8I ,dP   I8, ,8I  _,88,_,dP   8I   8I   Yb,,dP     Y8,,d8,_    _
+"  'Y8888P'8888'     'Y8P'   8P''Y88P'   8I   8I   `Y88P      `Y8P''Y8888PP
+"        ,d8I'                                                             
+"      ,dP'8I                                                              
+"     ,8'  8I                                                              
+"     I8   8I                                                              
+"     `8, ,8I                                                              
+"      `Y8P'                                                               
+" 
+"
+" Colorscheme {{{
+" Use dracula if it exists, otherwise jellybeans if it exists, and then
+" zellner
+try
+    colorscheme dracula
+catch
+    try
+        colorscheme jellybeans
+    catch
+        colorscheme zellner
+    endtry
+endtry
+" }}}
+" gvim Fonts and Menus {{{
+set guifont=FantasqueSansMono\ Nerd\ Font\ 12,Ubuntu\ Mono:h12,IBM\ Plex\ Mono:h11,Consolas:h11
+set guioptions-=m
+set guioptions-=T
+set guioptions-=r
+set guioptions-=L
+nnoremap <leader>eg :vs $MYGVIMRC<CR>
+nnoremap <leader>sg :so $MYGVIMRC<CR>
+nnoremap <leader>sv :so $MYVIMRC<CR>:so $MYGVIMRC<CR>
+" Note - setting colorscheme overrides this, so it has to be done last
+hi CursorLine gui=bold
+" }}}

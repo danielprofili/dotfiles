@@ -1,0 +1,12 @@
+#+TITLE: Character Name
+
+#+CAPTION: Profile picture caption
+[[/path/to/image]]
+* Personality
+
+* Relationships
+
+* History
+
+* Powers/Abilities
+
