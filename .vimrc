@@ -13,28 +13,6 @@
 "                                      |_|                  `   
 "                                                               
 "
-" Plugs {{{
-set nocompatible
-" Autoinstall vim-plug if not there
-if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-call plug#begin()
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'scrooloose/nerdcommenter'
-Plug 'itchyny/lightline.vim'
-Plug 'tpope/vim-surround'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/limelight.vim'
-Plug 'dracula/vim' , {'as' : 'dracula'}
-Plug 'reedes/vim-pencil'
-Plug 'reedes/vim-colors-pencil'
-Plug 'dylanaraps/wal.vim'
-
-call plug#end()
-" }}}
 " General {{{
 set encoding=utf-8
 
