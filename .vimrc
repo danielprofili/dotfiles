@@ -144,39 +144,7 @@ nnoremap N Nzz
 nnoremap <C-I> <C-I>zz
 nnoremap <C-O> <C-O>zz
 " }}}
-" netrw Settings {{{
-" disable the banner
-let g:netrw_banner = 0
-" tree view default
-let g:netrw_liststyle = 3
-" open new files in vertical split
-let g:netrw_browse_split = 0
-" limit width to 25%
-let g:netrw_winsize = 25
-" }}}
 " Modeline (for this file) {{{
 set modelines=5
 " vim:foldmethod=marker:foldlevel=0
 " }}}
-" Functions {{{
-let g:writing_mode=0
-function! WritingModeToggle()
-    if g:writing_mode
-        colorscheme dracula
-        set background=dark
-        Goyo
-        Limelight!
-        let g:writing_mode=0
-    else
-        colorscheme pencil
-        set background=light
-        Goyo
-        Limelight
-        set textwidth=80
-        let g:writing_mode=1
-    endif
-endfunction
-nnoremap <leader>wm :call WritingModeToggle()<CR>
-" }}}
-"
-" ksdfj
