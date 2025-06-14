@@ -1,0 +1,15 @@
+[font]
+size = 10.0
+
+[font.bold]
+style = "Bold"
+
+[font.bold_italic]
+style = "Bold Italic"
+
+[font.italic]
+style = "Italic"
+
+[font.normal]
+family = "BlexMono Nerd Font"
+style = "Regular"
