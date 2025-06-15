@@ -271,9 +271,9 @@ bar {
 #exec --no-startup-id xinput set-prop 16 287 1
 
 # Locking the screen
-set $lock_cmd "i3lock --color=000000 --ignore-empty-password"
-# exec --no-startup-id xscreensaver -no-splash
-# set $lock_cmd "xscreensaver-command --lock"
+# set $lock_cmd "i3lock --color=000000 --ignore-empty-password"
+exec --no-startup-id xscreensaver -no-splash
+set $lock_cmd "xscreensaver-command --lock"
 # set $lock_cmd "slock"
 bindsym Mod4+shift+b exec --no-startup-id $lock_cmd 
 # exec --no-startup-id xautolock -time 10 -locker $lock_cmd
@@ -318,19 +318,22 @@ bindsym $mod+Shift+Escape mode "$mode_system"
 
 # Media player controls
 # play-pause option for playerctl toggles between play and pause
-#bindsym XF86AudioPlay exec playerctl play-pause
-#bindsym XF86AudioNext exec playerctl next
-#bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 
-bindsym XF86AudioPlay exec --no-startup-id mpc toggle
-bindsym XF86AudioNext exec --no-startup-id mpc next
-bindsym XF86AudioPrev exec --no-startup-id mpc cdprev
-bindsym XF86AudioRaiseVolume exec --no-startup-id mpc volume +5
-bindsym Shift+XF86AudioNext exec --no-startup-id mpc volume +5
+#bindsym XF86AudioPlay exec --no-startup-id mpc toggle
+#bindsym XF86AudioNext exec --no-startup-id mpc next
+#bindsym XF86AudioPrev exec --no-startup-id mpc cdprev
+#bindsym XF86AudioRaiseVolume exec --no-startup-id mpc volume +5
+#bindsym Shift+XF86AudioNext exec --no-startup-id mpc volume +5
 
-bindsym XF86AudioLowerVolume exec --no-startup-id mpc volume -5
+#bindsym XF86AudioLowerVolume exec --no-startup-id mpc volume -5
 
-bindsym Shift+XF86AudioPrev exec --no-startup-id mpc volume -5
+#bindsym Shift+XF86AudioPrev exec --no-startup-id mpc volume -5
 # shortcuts for some programs
 #bindsym XF86Mail exec firefox
 for_window [class="St" instance="ncmpcpp"] move scratchpad
