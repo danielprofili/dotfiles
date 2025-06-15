@@ -67,7 +67,7 @@ font-3 = siji:pixelsize=10;1
 font-4 = Material Icons:style=Regular:size=10.5;1
 
 ;modules-left = bspwm i3
-modules-center = mpd
+modules-center = mpd playerctl
 modules-left = pulseaudio cpu temperature battery
 modules-right = xbacklight wlan xwindow date
 ;modules-right = xbacklight wlan eth cpu temperature pulseaudio date
@@ -396,10 +396,10 @@ format-disconnected =
 type = internal/date
 interval = 5
 
-date = "%m/%d/%y"
+date = "%a %d %b %Y"
 ;date-alt = " %Y-%m-%d"
 
-time = %I:%M %p 
+time = %H:%M 
 ;time = %r
 ;time-alt = %H:%M:%S
 
@@ -587,3 +587,8 @@ margin-top = 5
 margin-bottom = 5
 
 ; vim:ft=dosini
+
+[module/playerctl]
+type = custom/script
+exec = playerctl metadata --format "[{{lc(status)}}] {{artist }} - {{ title }}"
+tail = true
