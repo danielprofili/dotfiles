@@ -11,6 +11,7 @@
 ** Save =custom= settings elsewhere.
 #+BEGIN_SRC emacs-lisp
 (setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 #+END_SRC
 ** Don't show the annoying startup screen.
 #+BEGIN_SRC emacs-lisp
