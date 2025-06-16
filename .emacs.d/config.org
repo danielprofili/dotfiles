@@ -1,5 +1,5 @@
 #+TITLE: Configuration
-#+AUTHOR: dprofili3
+#+AUTHOR: Daniel Profili
 
 * General Emacs settings
 ** Start the emacs server, if it isn't already running.
@@ -7,12 +7,6 @@
   (require 'server)
   (unless (server-running-p)
     (server-start))
-#+END_SRC
-** Set default emacs directory.
-#+BEGIN_SRC emacs-lisp
-  ;(if (file-directory-p "C:\\Users\\daniel\\")
-  ;    (setq default-directory "C:\\Users\\daniel\\")
-  ;    (if (file-directory-p "C:\\Users\\dprofili3-gtri") (setq default-directory "C:\\Users\\dprofili3-gtri\\") ()))
 #+END_SRC
 ** Save =custom= settings elsewhere.
 #+BEGIN_SRC emacs-lisp
