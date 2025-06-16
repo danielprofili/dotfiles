@@ -138,13 +138,6 @@ This is a package designed to improve visual-line-mode slightly, by adding visua
     :config
     (evil-better-visual-line-on))
 #+END_SRC
-**** Set undo system for =evil=
-#+BEGIN_SRC emacs-lisp
-        (use-package undo-tree
-          :ensure t
-          :config
-          (global-undo-tree-mode))
-#+END_SRC
 *** Leader key
 **** Create a new keymap for the leader key I like (=\=). 
 This allows vim-like leader binding =<leader>-something= by using the =leader-backslash-map= in keymaps.
