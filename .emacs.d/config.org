@@ -105,7 +105,7 @@
 ** =diminish=
 *** Hide some useless minor modes from the modeline.
 #+BEGIN_SRC emacs-lisp
- ;;(use-package delight)
+ (use-package delight)
 #+END_SRC
 ** =evil-mode=
 *** General
@@ -168,6 +168,7 @@ This allows vim-like leader binding =<leader>-something= by using the =leader-ba
 **** Define shortcut for editing configuration.
  #+BEGIN_SRC emacs-lisp
    (define-key leader-backslash-map "ev" '(lambda () (interactive) (find-file-other-window "~/.emacs.d/config.org")))
+   (define-key leader-backslash-map "sv" '(lambda () (interactive) (load user-init-file)))
  #+END_SRC
 **** Bind enter to =newline-and-indent=.
 **** Move up/down by visual lines in normal, visual, and visual line modes.
@@ -236,6 +237,10 @@ For visual-line mode, a custom function has to be defined.
 #+BEGIN_SRC emacs-lisp
   (define-key evil-normal-state-map ";" 'evil-ex)
 #+END_SRC
+**** =C-i= remapping
+#+begin_src emacs-lisp
+  (define-key evil-normal-state-map (kbd "C-i") 'evil-jump-forward)
+#+end_src
 ** =helm=
 *** Initialize =helm=, use it as much as possible, and use it for =M-x= by default.
  #+BEGIN_SRC emacs-lisp
@@ -652,15 +657,16 @@ I like to use some non-insane keybindings for some org actions.
 ** Font
 Use my preferred font if possible. Otherwise use basic monospace.
 #+BEGIN_SRC emacs-lisp
-  (if (member "FantasqueSansMono Nerd Font Mono" (font-family-list))
-      (set-fontset-font nil 'ascii (font-spec
-                                    :family "FantasqueSansMono Nerd Font Mono"
-                                    :size 12.0)
-                        nil)
-     (set-fontset-font nil 'ascii (font-spec
-                                   :family "Liberation Mono"
-                                   :size 12.0)
-                       nil))
+  ;; (if (member "FantasqueSansMono Nerd Font Mono" (font-family-list))
+  ;;     (set-fontset-font nil 'ascii (font-spec
+  ;;                                   :family "FantasqueSansMono Nerd Font Mono"
+  ;;                                   :size 12.0)
+  ;;                       nil)
+  ;;    (set-fontset-font nil 'ascii (font-spec
+  ;;                                  :family "Liberation Mono"
+  ;;                                  :size 12.0)
+  ;;                      nil))
+  (add-to-list 'default-frame-alist '(font . "Aporetic Sans Mono-14"))
 #+END_SRC
 ** Window size
 #+BEGIN_SRC emacs-lisp
