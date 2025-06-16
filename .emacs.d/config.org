@@ -782,7 +782,7 @@ Highlight characters that go past 80 columns.
    (setq-default indent-tabs-mode nil)
    (setq tab-width 4)
  #+END_SRC
-* Writing 
+* Writing
 ** Modes 
 #+BEGIN_SRC emacs-lisp
   (use-package writeroom-mode)
@@ -823,7 +823,5 @@ I use =hydra= to manage templates.
 #+END_SRC
 * Notes
 ** Todo list [0/2]
-*** TODO Stop using =custom= functions
-=custom.el= is not always changed when I change stuff in here, which can be annoying.
 *** TODO Make a custom writing mode
 *** TODO Use hydra for templates
