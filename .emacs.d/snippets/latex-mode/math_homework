@@ -1,0 +1,106 @@
+# key: homework
+# name: math homework
+# --
+\documentclass{article}
+\usepackage{amsmath, amssymb, graphicx}
+\usepackage{enumitem}
+\usepackage{amsthm}
+\usepackage{multirow}
+\usepackage[margin=1.25in]{geometry} 
+\usepackage{eucal}
+\usepackage{mathrsfs}
+
+% for automata
+\usepackage{tikz}
+\usetikzlibrary{arrows,automata,positioning}
+
+% theorem environment setup
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem*{lemma}{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{property}[theorem]{Property}
+\newtheorem{claim}[theorem]{Claim}
+
+% like theorem, but body not italic
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+
+% like definition, but title is italic and not bold
+\theoremstyle{remark}
+\newtheorem{exmp}[theorem]{Example}
+
+% shortcut for using custom list labels
+\newlist{parts}{enumerate}{3}
+\setlist[parts]{label=(\alph*)}
+
+% (r)oman parts
+\newlist{rparts}{enumerate}{3}
+\setlist[rparts]{label=(\roman*)}
+
+% General math commands
+\newcommand{\bijection}{\xrightarrow[\text{onto}]{\text{\$1\$--\$1\$}}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\dx}{\; \textrm{d}}
+
+% Algebra stuff
+\newcommand{\sI}{\mathscr{I}}
+\newcommand{\sA}{\mathscr{A}}
+
+% Linear algebra stuff
+\newcommand{\cM}{\mathcal{M}}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\Null}{null}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\la}{\langle}
+\DeclareMathOperator{\ra}{\rangle}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Aut}{Aut}
+\newcommand{\inprod}[1]{\la #1 \ra}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+
+% probability
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\E}{\mathbb{E}}
+\DeclareMathOperator{\Var}{Var}
+
+% Homework problem environment
+\newenvironment{problem}[1] {
+  \section*{Problem #1}
+  %\begin{minipage}{1.0\linewidth}
+    
+}
+{  \\ }
+
+\begin{document}
+\title
+{$1 Homework $2}
+\author{Daniel Profili}
+\date{\today}
+\maketitle
+\noindent
+
+\begin{problem}{ $3 }
+  $0
+\end{problem}
+
+
+
+\end{document}
+
+
+
+
+
+

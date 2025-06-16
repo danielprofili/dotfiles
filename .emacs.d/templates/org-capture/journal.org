@@ -1,0 +1,4 @@
+* %U %^{Name}
+%^{Thing default|success|failure|complaint}
+%?
+  

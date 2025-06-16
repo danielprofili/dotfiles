@@ -1,0 +1,3 @@
+#!/bin/bash
+wal -n -i Pictures/1.jpg
+feh --bg-fill Pictures/1.jpg Pictures/2.jpg

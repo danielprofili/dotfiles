@@ -1,0 +1,213 @@
+! --- ~/.Xresources ------------------------------------------------------------
+! ------------------------------------------------------------------------------
+! --- generated with 4bit Terminal Color Scheme Designer -----------------------
+! ------------------------------------------------------------------------------
+! --- http://ciembor.github.com/4bit -------------------------------------------
+! ------------------------------------------------------------------------------
+
+
+! URxvt general settings
+URxvt.saveLines: 2000
+URxvt.scrollBar: False
+URxvt.scrollStyle: rxvt
+URxvt.transparent: true
+URxvt.shading: 15
+urxvt.depth: 32
+URxvt.urlLauncher: firefox
+URxvt.underlineURLs: true
+
+!! Common Keybinds for Navigations
+URxvt.keysym.Shift-Up: command:\033]720;1\007
+URxvt.keysym.Shift-Down: command:\033]721;1\007
+URxvt.keysym.Control-Up: \033[1;5A
+URxvt.keysym.Control-Down: \033[1;5B
+URxvt.keysym.Control-Right: \033[1;5C
+URxvt.keysym.Control-Left: \033[1;5D
+
+! Font
+!URxvt.font: xft:SourceCodePro-Regular
+!URxvt.boldFont: xft:SourceCodePro-Bold
+!URxvt.font: xft:Sauce Code Pro Nerd Font:regular:size=11
+!URxvt.boldFont: xft:Sauce Code Pro Nerd Font:bold:size=11
+!URxvt.font: xft:Source Code Pro for Powerline:Regular:size=11
+!URxvt.boldFont: xft:Source Code Pro for Powerline:Bold:size=11
+!*.font: FantasqueSansMono Nerd Font:pixelsize=16:antialias=true:autohint=true;
+!URxvt.font: xft:FantasqueSansMono Nerd Font:Regular
+!URxvt.boldFont: xft:FantasqueSansMono Nerd Font:Bold
+!URxvt.font: xft:DejaVu Sans Mono for Powerline:Regular
+!URxvt.boldFont: xft:DejaVu Sans Mono for Powerline:Bold
+!URxvt.letterSpace: -1
+
+! --- special colors ---
+
+*background: #0d1926
+*foreground: #d9e6f2
+
+! --- standard colors ---
+
+!! black
+!*color0: #000000
+!
+!! bright_black
+!*color8: #262626
+!
+!! red
+!*color1: #c46e76
+!
+!! bright_red
+!*color9: #e2b6bb
+!
+!! green
+!*color2: #76c46e
+!
+!! bright_green
+!*color10: #bbe2b6
+!
+!! yellow
+!*color3: #c4bc6e
+!
+!! bright_yellow
+!*color11: #e2ddb6
+!
+!! blue
+!*color4: #6e76c4
+!
+!! bright_blue
+!*color12: #b6bbe2
+!
+!! magenta
+!*color5: #bc6ec4
+!
+!! bright_magenta
+!*color13: #ddb6e2
+!
+!! cyan
+!*color6: #6ec4bc
+!
+!! bright_cyan
+!*color14: #b6e2dd
+!
+!! white
+!*color7: #d9d9d9
+!
+!! bright_white
+!*color15: #ffffff
+
+!! special
+!*.foreground:   #bae5e3
+!*.background:   #030404
+!*.cursorColor:  #bae5e3
+!
+!! black
+!*.color0:       #050808
+!*.color8:       #c6af69
+!
+!! red
+!*.color1:       #101616
+!*.color9:       #6fa8a6
+!
+!! green
+!*.color2:       #1f2928
+!*.color10:      #61bc66
+!
+!! yellow
+!*.color3:       #344241
+!*.color11:      #e0c56b
+!
+!! blue
+!*.color4:       #4f6261
+!*.color12:      #78d3d0
+!
+!! magenta
+!*.color5:       #6f8988
+!*.color13:      #eeb4ec
+!
+!! cyan
+!*.color6:       #94b7b5
+!*.color14:      #80db84
+!
+!! white
+!*.color7:       #bfebe9
+!*.color15:      #92cfcd
+!
+!
+
+!! special
+!*.foreground:   #e2dbdd
+!*.background:   #050304
+!*.cursorColor:  #e2dbdd
+!
+!! black
+!*.color0:       #0b0607
+!*.color8:       #3b8377
+!
+!! red
+!*.color1:       #1b1315
+!*.color9:       #f383a6
+!
+!! green
+!*.color2:       #2f2327
+!*.color10:      #71a73f
+!
+!! yellow
+!*.color3:       #4c3b3f
+!*.color11:      #63ab9e
+!
+!! blue
+!*.color4:       #70585e
+!*.color12:      #508f84
+!
+!! magenta
+!*.color5:       #9c7b84
+!*.color13:      #d071f1
+!
+!! cyan
+!*.color6:       #bdacb0
+!*.color14:      #c25de3
+!
+!! white
+!*.color7:       #e7e1e2
+!*.color15:      #78ac48
+
+! special
+*.foreground:   #aaaaaa
+*.background:   #1a1a1a
+*.cursorColor:  #aaaaaa
+
+! black
+*.color0:       #000000
+*.color8:       #666666
+
+! red
+*.color1:       #9e1828
+*.color9:       #bc5766
+
+! green
+*.color2:       #008800
+*.color10:      #61a171
+
+! yellow
+*.color3:       #d2bb4b
+*.color11:      #e7db52
+
+! blue
+*.color4:       #414171
+*.color12:      #5085af
+
+! magenta
+*.color5:       #963c59
+*.color13:      #a97a99
+
+! cyan
+*.color6:       #418179
+*.color14:      #6ba4a4
+
+! white
+*.color7:       #717171
+*.color15:      #bebebe
+
+! ------------------------------------------------------------------------------
+! --- end of terminal colors section -------------------------------------------
+! ------------------------------------------------------------------------------
+
+

@@ -1,0 +1,28 @@
+# -*- mode: snippet -*-
+# name: Double-spaced org document 
+# key: ds
+# --
+
+#+TITLE: $1
+#+SUBTITLE: $2
+#+AUTHOR: Daniel Profili
+#+OPTIONS: toc:nil
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [12pt]
+#+LATEX_HEADER: \usepackage[margin=1.0in]{geometry}
+#+LATEX_HEADER: \usepackage{setspace}
+#+LATEX_HEADER: \usepackage{apacite}
+#+LATEX_HEADER: \usepackage{indentfirst}
+#+LATEX_HEADER: \doublespacing
+
+# Title page
+\thispagestyle{empty}
+\newpage
+\clearpage
+\pagenumbering{arabic}
+# End title page
+
+$0
+
+\bibliographystyle{apacite}
+\bibliography{sources.bib}
