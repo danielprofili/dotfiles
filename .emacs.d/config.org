@@ -668,7 +668,7 @@ Use my preferred font if possible. Otherwise use basic monospace.
 ** Status bar
 *** Use =powerline= as the status bar.
  #+BEGIN_SRC emacs-lisp
-    (use-package powerline)
+    ;;(use-package powerline)
  #+END_SRC
 *** Use =powerline-evil= to show the evil status indicator.
  #+BEGIN_SRC emacs-lisp
