@@ -19,8 +19,11 @@
 #+END_SRC
 ** Use (visual) line numbers in all buffers by default.
 #+BEGIN_SRC emacs-lisp
-  (setq-default display-line-numbers 'visual
-		display-line-numbers-widen t)
+  ;; (setq-default display-line-numbers 'visual
+  ;; 	      display-line-numbers-widen t)
+  ;; (setq-default display-line-numbers nil
+  ;;               display-line-numbers-widen nil)
+  (add-hook 'prog-mode-hook (lambda () (setq-local display-line-numbers 'visual)))
 #+END_SRC
 ** Hide the GUI elements (menu bar, scroll bar, and tool bar).
 #+BEGIN_SRC emacs-lisp
@@ -383,6 +386,18 @@ Use =<leader>o= to do the same, but for org headings.
 #+begin_src emacs-lisp
   (use-package which-key
   :config (which-key-mode))
+#+end_src
+** =eaf= (emacs application framework)
+#+begin_src emacs-lisp
+  ;; (use-package eaf
+  ;;   :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
+  ;;   :custom
+  ;;   (eaf-browser-continue-where-left-off t)
+  ;;   (eaf-browser-enable-adblocker t)
+  ;;   (browse-url-browser-function 'eaf-open-browser))
+  ;; (require 
+  ;; '
+  ;;eaf-browser)
 #+end_src
 * Major modes
 ** =org-mode=

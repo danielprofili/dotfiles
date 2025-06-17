@@ -15,3 +15,6 @@ style = "Italic"
 #family = "ComicShannsMono Nerd Font"
 family = "Aporetic Sans Mono"
 style = "Regular"
+
+[window]
+opacity = 0.5

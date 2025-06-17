@@ -7,7 +7,7 @@
  '(evil-undo-system 'undo-redo)
  '(org-startup-folded t)
  '(package-selected-packages
-   '(yasnippet-snippets writeroom-mode which-key telephone-line projectile powerline ox-twbs org-ref org-evil magit ivy highlight-indent-guides helm focus evil-surround evil-better-visual-line disable-mouse dired-git-info delight company benchmark-init backward-forward auctex ample-theme)))
+   '(eaf-browser yasnippet-snippets writeroom-mode which-key telephone-line projectile powerline ox-twbs org-ref org-evil magit ivy highlight-indent-guides helm focus evil-surround evil-better-visual-line disable-mouse dired-git-info delight company benchmark-init backward-forward auctex ample-theme)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
