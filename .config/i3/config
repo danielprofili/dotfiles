@@ -343,6 +343,7 @@ bindsym $mod+Shift+Escape mode "$mode_system"
 # fix for calendar and yad
 # for_window [class="Yad"] floating enable
 for_window [class=".*"] border pixel 2
+default_border pixel 2 
 smart_borders on
 smart_gaps on
 gaps outer 0
