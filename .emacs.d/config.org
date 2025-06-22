@@ -600,9 +600,9 @@ I like to use some non-insane keybindings for some org actions.
 ** Font
 Use my preferred font (Fantasque Sans Mono), if possible. Otherwise use basic monospace.
 #+BEGIN_SRC emacs-lisp
-  (if (member "FantasqueSansMono Nerd Font Mono" (font-family-list))
+  (if (member "FantasqueSansM Nerd Font Mono" (font-family-list))
       (set-fontset-font nil 'ascii (font-spec
-                                    :family "FantasqueSansMono Nerd Font Mono"
+                                    :family "FantasqueSansM Nerd Font Mono"
                                     :size 11.0)
                         nil))
     ;; (set-fontset-font nil 'ascii (font-spec
