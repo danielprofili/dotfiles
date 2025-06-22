@@ -17,6 +17,7 @@ set $mod Mod4
 # Colors
 # exec --no-startup-id wal -i ~/wallpapers
 # exec --no-startup-id . ~/bin/wal-fill.sh ~/Pictures/rooftop_crop.png
+exec --no-startup-id . ~/bin/wal-fill
 
 # drawing tablet on right monitor
 exec --no-startup-id . ~/bin/tablet.sh
@@ -34,8 +35,8 @@ exec --no-startup-id parcellite
 
 # screen layout
 # exec --no-startup-id ~/bin/dual-monitors.sh
-exec --no-startup-id source ~/.screenlayout/dual.sh
-exec --no-startup-id wal -i Pictures/wallpapers
+exec_always --no-startup-id source ~/.screenlayout/dock.sh
+exec --no-startup-id wal-fill 
 
 # Start picom (compton) compositor
 exec --no-startup-id picom -b
@@ -53,7 +54,9 @@ exec --no-startup-id autorandr --change
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
 #font pango:SFNS Display 10 
-font pango:Inconsolata 11
+#font pango:Liberation Mono 11
+#font pango:ComicShannsMono 11, FantasqueSansM Nerd Font 11, Hack Nerd Font Mono 11, Liberation Mono 11
+font pango:Aporetic Sans Mono 11, FantasqueSansM Nerd Font 11, Hack Nerd Font Mono 11, Liberation Mono 11
 
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -162,7 +165,7 @@ set $ws16 "16"
 set $ws17 "17"
 set $ws18 "18"
 set $ws19 "19"
-set $ws1 "1: Mail"
+set $ws1 "1: Mail"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -198,7 +201,8 @@ bindsym $mod+r exec --no-startup-id ~/.config/i3/rename_workspace.sh
 # bindsym $mod+Shift+Tab exec --no-startup-id python ~/.config/i3/cycle-workspace.py
 bindsym $mod+Shift+Tab move workspace to output right
 bindsym $mod+Shift+m exec --no-startup-id ~/.config/i3/move-to-named-ws.sh
-bindsym $mod+Shift+e exec --no-startup-id ~/bin/emacs.sh
+bindsym $mod+Ctrl+space exec --no-startup-id emacsclient -c -a ""
+bindsym $mod+Shift+e move container to output left
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -271,7 +275,7 @@ bar {
 #exec --no-startup-id xinput set-prop 16 287 1
 
 # Locking the screen
-# set $lock_cmd "i3lock --color=000000 --ignore-empty-password"
+#set $lock_cmd "i3lock --color=000000 --ignore-empty-password"
 exec --no-startup-id xscreensaver -no-splash
 set $lock_cmd "xscreensaver-command --lock"
 # set $lock_cmd "slock"
@@ -281,15 +285,6 @@ bindsym Mod4+shift+b exec --no-startup-id $lock_cmd
 # Start power manager and network manager
 exec --no-startup-id xfce4-power-manager
 exec --no-startup-id nm-applet
-
-# volume icon
-#exec --no-startup-id volumeicon
-
-# mailspring
-#exec --no-startup-id mailspring -b
-
-# redshift (screen dimmer)
-#exec --no-startup-id redshift-gtk
 
 # Wallpaper
 #exec --no-startup-id feh --bg-max ~/Pictures/world-eater.png
@@ -321,24 +316,21 @@ bindsym $mod+Shift+Escape mode "$mode_system"
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
 
 #bindsym XF86AudioPlay exec --no-startup-id mpc toggle
 #bindsym XF86AudioNext exec --no-startup-id mpc next
 #bindsym XF86AudioPrev exec --no-startup-id mpc cdprev
 #bindsym XF86AudioRaiseVolume exec --no-startup-id mpc volume +5
 #bindsym Shift+XF86AudioNext exec --no-startup-id mpc volume +5
-
+#
 #bindsym XF86AudioLowerVolume exec --no-startup-id mpc volume -5
-
+#
 #bindsym Shift+XF86AudioPrev exec --no-startup-id mpc volume -5
 # shortcuts for some programs
 #bindsym XF86Mail exec firefox
-for_window [class="St" instance="ncmpcpp"] move scratchpad
-exec --no-startup-id st -n ncmpcpp -e ncmpcpp
-bindsym $mod+n [class="St" instance="ncmpcpp"] scratchpad show
+#for_window [class="St" instance="ncmpcpp"] move scratchpad
+#exec --no-startup-id st -n ncmpcpp -e ncmpcpp
+#bindsym $mod+n [class="St" instance="ncmpcpp"] scratchpad show
 
 # for_window [class="Thunderbird"] move to workspace $ws1
 # exec --no-startup-id thunderbird
@@ -351,6 +343,7 @@ bindsym $mod+n [class="St" instance="ncmpcpp"] scratchpad show
 # fix for calendar and yad
 # for_window [class="Yad"] floating enable
 for_window [class=".*"] border pixel 2
+default_border pixel 2 
 smart_borders on
 smart_gaps on
 gaps outer 0
@@ -363,10 +356,10 @@ exec_always --no-startup-id autotiling
 #for_window [title="Friends List"] floating enable
 
 
-set_from_resource $fg i3wm.color7 #f0f0f0
+set_from_resource $fg i3wm.color7 #5e5e5e
 set_from_resource $fg2 i3wm.color6 #f0f0f0
 set_from_resource $bg i3wm.color2 #f0f0f0
-set_from_resource $bg-bar i3wm.color0 #f0f0f0
+set_from_resource $bg-bar i3wm.color0 #000000
 
 # class                 border  backgr. text indicator child_border
 client.focused          $fg     $bg     $fg  $bg       $fg
@@ -380,3 +373,4 @@ client.background       $bg
 
 # Script to start polybar bar(s)
 exec_always --no-startup-id source ~/bin/start_polybar.sh
+exec --no-startup-id xscreensaver
