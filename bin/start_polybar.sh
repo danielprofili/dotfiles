@@ -1,14 +1,14 @@
-#!/bin/bash
-
 killall -q polybar
-if type "xrandr"; then
-  for m in $(xrandr --query | grep " connected" | cut -d" " -f1); do
+# Start primary monitor bars first so that it gets the tray
+primary=$(polybar --list-monitors | grep "primary" | cut -d ":" -f1)
+MONITOR=$primary polybar --reload topbar &
+MONITOR=$primary polybar --reload wsbar &
+# Start bars on non primary monitors
+for m in $(polybar --list-monitors | grep -v "primary" | cut -d ":" -f1); do
     MONITOR=$m polybar --reload topbar &
-    # MONITOR=$m polybar --reload wsbar &
-  done
-else
-  polybar --reload topbar &
-  # polybar --reload wsbar &
-fi
+    MONITOR=$m polybar --reload wsbar &
+done
+
+#!/bin/bash
 # polybar -r topbar
 # polybar -r wsbar
