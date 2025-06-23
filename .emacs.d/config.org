@@ -72,6 +72,11 @@
   (setq comment-auto-fill-only-comments 1)
   (setq-default auto-fill-function 'do-auto-fill)
 #+END_SRC
+** Transparency
+#+begin_src emacs-lisp
+  (set-frame-parameter nil 'alpha-background 85) 
+  (set-frame-parameter nil 'alpha 100)
+#+end_src
 * Package Management
 ** Add =org= and =melpa= to package archives.
 #+BEGIN_SRC emacs-lisp
@@ -108,7 +113,7 @@
 ** =diminish=
 *** Hide some useless minor modes from the modeline.
 #+BEGIN_SRC emacs-lisp
- (use-package delight)
+  (use-package delight)
 #+END_SRC
 ** =evil-mode=
 *** General
@@ -639,28 +644,8 @@ I like to use some non-insane keybindings for some org actions.
 * UI options
 ** Theme
 #+BEGIN_SRC emacs-lisp
-  (use-package ample-theme)
-  (load-theme 'ample t)
-  ;; (use-package xresources-theme)
-  ;; (
-   ;; load-theme 'xresources t)
-  ;
-  ;;                                         (use-package gruvbox-theme)
-  ;; ;
-  ;;Automatically allows the theme to run lisp code.
-  (load-theme 'ample t)
-  ; (load-theme 'gruvbox t)
-  ;; (use-package ewal
-  ;;   :init (setq ewal-use-built-in-always-p nil
-  ;;               ewal-use-built-in-on-failure-p t
-  ;;               ewal-built-in-palette "sexy-material"))
-  ;; (use-package ewal-evil-cursors
-  ;;   :after (ewal-spacemacs-themes)
-  ;;   :config (ewal-evil-cursors-get-colors
-  ;;            :apply t :spaceline t))
-  ;; (use-package spaceline
-  ;;   :after (ewal-evil-cursors winum)
-  ;;   :init (setq powerline-default-separator nil))
+  (use-package modus-themes)
+  (load-theme 'modus-vivendi t)
 #+END_SRC
 ** Font
 Use my preferred font if possible. Otherwise use basic monospace.
@@ -683,7 +668,7 @@ Use my preferred font if possible. Otherwise use basic monospace.
 ** Status bar
 *** Use =powerline= as the status bar.
  #+BEGIN_SRC emacs-lisp
-    ;;(use-package powerline)
+   ;; (use-package powerline)
  #+END_SRC
 *** Use =powerline-evil= to show the evil status indicator.
  #+BEGIN_SRC emacs-lisp
