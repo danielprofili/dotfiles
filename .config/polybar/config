@@ -23,12 +23,12 @@ background-alt = #444
 ;foreground = ${xrdb:color7:#222}
 foreground = #dfdfdf
 foreground-alt = #555
-primary = #ffb52a
-;primary = ${xrdb:color6:#222}
+; primary = #ffb52a
+primary = ${xrdb:color6:#222}
 ;primary = #61a171
-;secondary = ${xrdb:color4:#222}
-;tertiary = ${xrdb:color5:#222}
-;quaternary = ${xrdb:color1:#222}
+secondary = ${xrdb:color4:#222}
+tertiary = ${xrdb:color5:#222}
+quaternary = ${xrdb:color1:#222}
 alert = #bd2c40
 
 [bar/topbar]
@@ -69,35 +69,18 @@ font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-3 = siji:pixelsize=10;1
 font-4 = Material Icons:style=Regular:size=10.5;1
 
-;modules-left = bspwm i3
-modules-center = xwindow
+modules-center = xwindow 
 modules-left = pulseaudio cpu temperature battery
 modules-right = xbacklight wlan date
-;modules-right = xbacklight wlan eth cpu temperature pulseaudio date
 separator = |
 
-;tray-detached = true
-; tray-position = left
-; tray-padding = 10 
-;tray-background = #0063ff
-
-;wm-restack = bspwm
 wm-restack = i3
-
-;override-redirect = true
-
-;scroll-up = bspwm-desknext
-;scroll-down = bspwm-deskprev
-
-; scroll-up = i3wm-wsnext
-; scroll-down = i3wm-wsprev
-
 cursor-click = pointer
-;cursor-scroll = ns-resize
 
 [bar/wsbar]
 ;monitor = ${env:MONITOR:HDMI-1}
 monitor = ${env:MONITOR:}
+separator = |
 bottom = true
 width = 100%
 height = 27
@@ -124,23 +107,21 @@ module-margin-left = 2
 module-margin-right = 2
 
 ; font-0 = FantasqueSansMono Nerd Font:size=10.5:antialias=true;0
-font-0 = VictorMono Nerd Font:size=10:antialias=true:style=Bold;0
-font-1 = SauceCodePro Nerd Font:size=10.5;0
-#font-0 = Source Code Pro:size=10;1
-#font-0 = fixed:pixelsize=10;1
+font-0 = Aporetic Sans Mono:size=11:antialias=true;0
+font-1 = FantasqueSansM Nerd Font:size=11:antialias=true;0
+; font-0 = VictorMono Nerd Font:size=10:antialias=true:style=Bold;0
+; font-1 = SauceCodePro Nerd Font:size=10.5;0
+; font-0 = Source Code Pro:size=10;1
+; font-0 = fixed:pixelsize=10;1
 font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-3 = siji:pixelsize=10;1
 font-4 = Material Icons:style=Regular:size=10.5;1
 
-modules-left = bspwm i3
-modules-right = xwindow date
-
-;tray-detached = true
-tray-position = none
-tray-padding = 5
-;tray-background = #0063ff
+modules-left = i3
+modules-right = memory filesystem tray
 
 ;wm-restack = bspwm
+
 wm-restack = i3
 
 ;override-redirect = true
@@ -153,6 +134,12 @@ wm-restack = i3
 
 cursor-click = pointer
 ;cursor-scroll = ns-resize
+
+[module/tray]
+type = internal/tray
+format-margin = 8px
+
+tray-spacing = 8px
 
 [module/polypomo]
 type = custom/script
@@ -170,6 +157,7 @@ scroll-down = ~/.config/polybar/scripts/polypomo/polypomo time -60
 [module/xwindow]
 type = internal/xwindow
 label = %title:0:50:...%
+label-layout-underline = ${colors.secondary}
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -192,13 +180,11 @@ type = internal/fs
 interval = 25
 
 mount-0 = /
-mount-1 = /data
-mount-2 = /windows
 
 ;label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
-label-mounted = %mountpoint%: %percentage_used%%
-label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.foreground-alt}
+; label-mounted = %mountpoint%: %percentage_used%%
+; label-unmounted = %mountpoint% not mounted
+; label-unmounted-foreground = ${colors.foreground-alt}
 
 [module/bspwm]
 type = internal/bspwm
@@ -332,6 +318,7 @@ ramp-load-4 = ▅
 ramp-load-5 = ▆
 ramp-load-6 = ▇
 ramp-load-7 = █
+
 [module/memory]
 type = internal/memory
 interval = 2
@@ -339,7 +326,8 @@ interval = 2
 format-prefix-foreground = ${colors.foreground-alt}
 ;format-underline = #4bffdc
 ;format-underline = ${colors.tertiary}
-label = %ramp_used%
+; label = %ramp_used%
+format = <label> <ramp-used>
 ramp-used-0 = ▁
 ramp-used-1 = ▂
 ramp-used-2 = ▃
