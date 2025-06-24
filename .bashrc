@@ -154,3 +154,6 @@ export EDITOR=vim;
 . "$HOME/.cargo/env"
 
 #set -o vi
+# source ~/.cache/wal/colors.sh
+
+# export color0_alpha="#00${color0/'#'}"

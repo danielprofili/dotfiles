@@ -18,6 +18,8 @@ style = "Regular"
 
 [window]
 opacity = 0.5
+# blur = true
+dynamic_title = true
 
 [keyboard]
 bindings = [

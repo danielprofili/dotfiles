@@ -1,5 +1,0 @@
-#!/bin/bash
-if [ -z $1 ]; then echo "Need to give a node name" && exit 1; fi
-klist -s
-if [ $? -ne 0 ]; then pkinit dprofili@HPCMP.HPC.MIL; fi
-ssh "dprofili@$1.navydsrc.hpc.mil"
