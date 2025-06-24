@@ -201,7 +201,7 @@ bindsym $mod+r exec --no-startup-id ~/.config/i3/rename_workspace.sh
 # bindsym $mod+Shift+Tab exec --no-startup-id python ~/.config/i3/cycle-workspace.py
 bindsym $mod+Shift+Tab move workspace to output right
 bindsym $mod+Shift+m exec --no-startup-id ~/.config/i3/move-to-named-ws.sh
-bindsym $mod+Ctrl+space exec --no-startup-id emacsclient -c -a ""
+bindsym $mod+Ctrl+space exec --no-startup-id ~/bin/emacs.sh
 bindsym $mod+Shift+e move container to output left
 
 # move focused container to workspace
@@ -313,9 +313,9 @@ bindsym $mod+Shift+Escape mode "$mode_system"
 
 # Media player controls
 # play-pause option for playerctl toggles between play and pause
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+#bindsym XF86AudioPlay exec playerctl play-pause
+#bindsym XF86AudioNext exec playerctl next
+#bindsym XF86AudioPrev exec playerctl previous
 
 #bindsym XF86AudioPlay exec --no-startup-id mpc toggle
 #bindsym XF86AudioNext exec --no-startup-id mpc next
