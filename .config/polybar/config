@@ -182,6 +182,11 @@ interval = 25
 
 mount-0 = /
 
+format-prefix = ""
+format-mounted = <label-mounted>
+format-prefix-foreground = ${colors.foreground-alt}
+label-mounted = %mountpoint% %free% 
+
 ;label-mounted = %{F#0a81f5}%mountpoint%%{F-}: %percentage_used%%
 ; label-mounted = %mountpoint%: %percentage_used%%
 ; label-unmounted = %mountpoint% not mounted
@@ -325,7 +330,7 @@ ramp-load-7 = █
 [module/memory]
 type = internal/memory
 interval = 2
-;format-prefix = " "
+format-prefix = "  "
 format-prefix-foreground = ${colors.foreground-alt}
 ;format-underline = #4bffdc
 ;format-underline = ${colors.tertiary}
@@ -349,9 +354,10 @@ interval = 3.0
 format-connected = <label-connected>
 ;format-connected-underline = #9f78e1
 ;format-connected-underline = ${colors.tertiary}
-label-connected =   %downspeed%   %upspeed% 󰛳  %essid% 
+; label-connected =   %downspeed%   %upspeed% 󰛳  %essid% 
+label-connected = 󰛳  %essid% 
 
-format-disconnected =  no wifi
+format-disconnected = 󰤮 no wifi
 ;format-disconnected = <label-disconnected>
 ;format-disconnected-underline = ${self.format-connected-underline}
 ;label-disconnected = %ifname% disconnected
