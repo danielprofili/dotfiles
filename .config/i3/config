@@ -17,12 +17,7 @@ set $mod Mod4
 # Colors
 # exec --no-startup-id wal -i ~/wallpapers
 # exec --no-startup-id . ~/bin/wal-fill.sh ~/Pictures/rooftop_crop.png
-exec --no-startup-id . ~/bin/wal-fill
-
-# drawing tablet on right monitor
-exec --no-startup-id . ~/bin/tablet.sh
-# on left monitor now
-# exec --no-startup-id . ~/bin/huion.sh
+exec_always --no-startup-id . ~/bin/wal-fill
 
 # Needed to avoid weirdness with wal  ?????
 exec --no-startup-id xrdb ~/.Xresources
@@ -203,6 +198,7 @@ bindsym $mod+Shift+Tab move workspace to output right
 bindsym $mod+Shift+m exec --no-startup-id ~/.config/i3/move-to-named-ws.sh
 bindsym $mod+Ctrl+space exec --no-startup-id ~/bin/emacs.sh
 bindsym $mod+Shift+e move container to output left
+bindsym $mod+x focus output next
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
