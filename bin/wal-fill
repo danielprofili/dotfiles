@@ -1,0 +1,4 @@
+#!/bin/bash
+wp1=$(ls ~/Pictures/ | sort -R | tail -1)
+wal -n -i ~/Pictures/$wp1 
+feh --bg-fill ~/Pictures/$wp1 ~/Pictures/$wp1
