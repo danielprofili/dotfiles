@@ -74,8 +74,10 @@
 #+END_SRC
 ** Transparency
 #+begin_src emacs-lisp
-  (set-frame-parameter nil 'alpha-background 85) 
-  (set-frame-parameter nil 'alpha 100)
+  ;; (custom-set-faces '(default: background nil))
+  ;; (set-frame-parameter nil 'alpha-background 85) 
+  ;; (set-frame-parameter nil 'alpha 100)
+  (add-to-list 'default-frame-alist '(alpha-background . 80))
 #+end_src
 * Package Management
 ** Add =org= and =melpa= to package archives.
@@ -795,6 +797,24 @@ Highlight characters that go past 80 columns.
    (setq-default indent-tabs-mode nil)
    (setq tab-width 4)
  #+END_SRC
+** Parentheses
+*** =smartparens=
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :ensure smartparens
+    :hook (prog-mode text-mode markdown-mode)
+    :config (require 'smartparens-config))
+#+end_src
+*** =evil-smartparens=
+#+begin_src emacs-lisp
+  (use-package evil-smartparens)
+  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+#+end_src
+** Expand region
+#+begin_src emacs-lisp
+  (use-package expand-region
+      :bind ("C-=" . er/expand-region))
+#+end_src
 * Writing
 ** Modes 
 #+BEGIN_SRC emacs-lisp
