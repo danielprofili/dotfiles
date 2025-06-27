@@ -94,7 +94,7 @@ alias ll='ls -alF'
 alias la='ls -lAh'
 #alias l='ls -CF'
 alias l='ls -alFh --group-directories-first'
-alias e='sw emacs.sh'
+alias e='sw emacsclient -a "" -c'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
