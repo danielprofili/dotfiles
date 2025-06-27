@@ -23,8 +23,8 @@ dynamic_title = true
 
 [keyboard]
 bindings = [
-{key = "U", mods="Control", action="ScrollHalfPageUp"},
-{key = "D", mods="Control", action="ScrollHalfPageDown"},
-{key = "K", mods="Control", action="ScrollLineUp"},
-{key = "J", mods="Control", action="ScrollLineDown"},
+# {key = "U", mods="Control", action="ScrollHalfPageUp"},
+# {key = "D", mods="Control", action="ScrollHalfPageDown"},
+# {key = "K", mods="Control", action="ScrollLineUp"},
+# {key = "J", mods="Control", action="ScrollLineDown"},
 ]
