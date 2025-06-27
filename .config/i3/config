@@ -23,7 +23,7 @@ exec_always --no-startup-id . ~/bin/wal-fill
 exec --no-startup-id xrdb ~/.Xresources
 
 # keymap shenanigan
-exec --no-startup-id xmodmap ~/.Xmodmap
+exec_always --no-startup-id xmodmap ~/.Xmodmap
 
 # clipboard manager
 exec --no-startup-id parcellite
@@ -340,10 +340,13 @@ bindsym $mod+Shift+Escape mode "$mode_system"
 # for_window [class="Yad"] floating enable
 for_window [class=".*"] border pixel 2
 default_border pixel 2 
-smart_borders on
+# smart_borders on
 smart_gaps on
 gaps outer 0
-gaps inner 20 
+gaps inner 10 
+hide_edge_borders both
+mouse_warping output
+workspace_auto_back_and_forth yes
 
 # autotiling
 exec_always --no-startup-id autotiling
