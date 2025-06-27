@@ -71,7 +71,7 @@ font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-3 = siji:pixelsize=10;1
 font-4 = Material Icons:style=Regular:size=10.5;1
 
-modules-center = xwindow 
+; modules-center = 
 modules-left = pulseaudio cpu temperature
 modules-right = xbacklight wlan date
 separator = |
@@ -117,6 +117,7 @@ font-2 = unifont:fontformat=truetype:size=8:antialias=false;0
 font-3 = siji:pixelsize=10;1
 font-4 = Material Icons:style=Regular:size=10.5;1
 
+modules-center = xwindow
 modules-left = i3
 modules-right = memory filesystem battery
 
@@ -453,7 +454,7 @@ ramp-volume-2 = 
 ramp-volume-foreground = ${colors.foreground}
 
 label-muted =   muted
-label-muted-foreground = ${colors.foreground}
+label-muted-foreground = ${colors.foreground-alt}
 
 [module/alsa]
 type = internal/alsa
