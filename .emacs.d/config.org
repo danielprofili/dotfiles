@@ -474,7 +474,7 @@ Out of order searching in minibuffer
 *** Display settings
 **** Hide emphasis markers (/, =, *, etc).
  #+BEGIN_SRC emacs-lisp
- (setq org-hide-emphasis-markers t)
+ (setq org-hide-emphasis-markers nil)
  #+END_SRC
 **** Disable line numbers in =org-mode=.
  #+BEGIN_SRC emacs-lisp
@@ -601,15 +601,16 @@ Use =org-indent-mode= for better list-like behavior, and nice indenting.
 *** Keybindings
 I like to use some non-insane keybindings for some org actions.
 #+BEGIN_SRC emacs-lisp
-  (define-key evil-normal-state-map (kbd "C-j") 'org-metadown)
-  (define-key evil-normal-state-map (kbd "C-k") 'org-metaup)
-  (evil-define-key 'normal org-mode-map
-    (kbd "TAB") 'org-cycle
-    ">" 'org-shiftmetaright
-    "<" 'org-shiftmetaleft
-    (kbd "SPC") 'org-todo
-    (kbd "RET") 'evil-toggle-fold
-    (kbd "S-RET") 'org-meta-return)
+      (evil-define-key 'normal org-mode-map
+        (kbd "TAB") 'org-cycle
+        ">" 'org-shiftmetaright
+        "<" 'org-shiftmetaleft
+        (kbd "SPC") 'org-todo
+        (kbd "RET") 'evil-toggle-fold
+        (kbd "S-RET") 'org-meta-return
+        (kbd "C-j") 'org-metadown
+        (kbd "C-k") 'org-metaup
+    )
 #+END_SRC
 *** Templates
 #+BEGIN_SRC emacs-lisp
