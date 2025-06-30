@@ -1,4 +1,4 @@
-#+TITLE: Configuration
+#+Title: Configuration
 #+AUTHOR: Daniel Profili
 
 * General Emacs settings
@@ -14,7 +14,10 @@
     (setq read-extended-command-predicate
           #'command-completion-default-include-p)
     ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t))
+    (setq enable-recursive-minibuffers t)
+    (global-auto-revert-mode 1)
+    (add-hook 'dired-mode-hook 'auto-revert-mode)
+    )
 #+end_src
 ** Start the emacs server, if it isn't already running.
 #+BEGIN_SRC emacs-lisp
@@ -41,9 +44,9 @@
 #+END_SRC
 ** Hide the GUI elements (menu bar, scroll bar, and tool bar).
 #+BEGIN_SRC emacs-lisp
-(menu-bar-mode -1)
-(toggle-scroll-bar -1)
-(tool-bar-mode -1)
+  ;; (menu-bar-mode -1)
+  (toggle-scroll-bar -1)
+  (tool-bar-mode -1)
 #+END_SRC
 ** Disable flashing/bell ringing when the cursor tries to go past the last line.
 #+BEGIN_SRC emacs-lisp
@@ -268,12 +271,12 @@ For visual-line mode, a custom function has to be defined.
 ** =helm=
 *** Initialize =helm=, use it as much as possible, and use it for =M-x= by default.
  #+BEGIN_SRC emacs-lisp
-   ;; (use-package helm
-   ;;              :ensure t
-   ;;              :bind (("M-x" . helm-M-x))
-   ;;              :delight helm-mode
-   ;;              :init (helm-mode 1)
-   ;;              )
+   (use-package helm
+                :ensure t
+                ;; :bind (("M-x" . helm-M-x))
+                :delight helm-mode
+                ;:init (helm-mode 1)
+                )
  #+END_SRC
 *** vim-like bindings in helm
 #+BEGIN_SRC emacs-lisp
@@ -322,7 +325,7 @@ For visual-line mode, a custom function has to be defined.
 #+END_SRC
 *** Use =C-p= to open a fuzzy file finder, like vim's CtrlP.
  #+BEGIN_SRC emacs-lisp
-   ;; (define-key evil-normal-state-map (kbd "C-p") 'helm-multi-files)
+   (define-key evil-normal-state-map (kbd "C-p") 'helm-multi-files)
  #+END_SRC
 ** =company=
 *** Completion engine. Use it as much as possible.
@@ -455,7 +458,7 @@ Out of order searching in minibuffer
 #+begin_src emacs-lisp
     (use-package consult
       :ensure t)
-  (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
+  ;; (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
 #+end_src
 ** =embark=
 #+begin_src emacs-lisp
@@ -468,6 +471,15 @@ Out of order searching in minibuffer
            ("C-c C-e" . embark-export)))
   (use-package embark-consult
     :ensure t)
+#+end_src
+** =ace-window=
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :bind (:map evil-motion-state-map("C-w C-w" . ace-window))
+    :config
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    )
 #+end_src
 * Major modes
 ** =org-mode=
