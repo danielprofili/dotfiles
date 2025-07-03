@@ -3,21 +3,50 @@
 
 * General Emacs settings
 ** Initial setup
+*** General Emacs settings.
 #+begin_src emacs-lisp
   (use-package emacs
     :init
-      (setq minibuffer-prompt-properties
+    (setq minibuffer-prompt-properties
           '(read-only t cursor-intangible t face minibuffer-prompt))
     (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
     ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
     ;; Vertico commands are hidden in normal buffers.
     (setq read-extended-command-predicate
           #'command-completion-default-include-p)
-    ;; Enable recursive minibuffers
-    (setq enable-recursive-minibuffers t)
+
+    ;; Some general options
+    (setq enable-recursive-minibuffers t
+          require-final-newline t
+          load-prefer-newer t
+          completion-ignore-case t
+          inhibit-startup-screen t
+          ring-bell-function 'ignore
+          help-window-select t
+
+          )
+
+    ;; General modes
     (global-auto-revert-mode 1)
     (add-hook 'dired-mode-hook 'auto-revert-mode)
+    (display-time-mode t)
+    (save-place-mode 1)
+    (toggle-scroll-bar -1)
+    (tool-bar-mode -1)
     )
+#+end_src
+*** Global keybindings
+#+begin_src emacs-lisp
+  (use-package general)
+  (general-define-key
+   ;; "<escape>" 'keyboard-escape-quit
+   "C-M-;" 'repeat-complex-command
+   "M-;" 'execute-extended-command
+   "C-f" 'avy-goto-char-timer
+   :states 'normal
+   "DEL" 'ace-window
+   )
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
 ** Start the emacs server, if it isn't already running.
 #+BEGIN_SRC emacs-lisp
@@ -30,10 +59,6 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 #+END_SRC
-** Don't show the annoying startup screen.
-#+BEGIN_SRC emacs-lisp
-(setq inhibit-startup-screen t)
-#+END_SRC
 ** Use (visual) line numbers in all buffers by default.
 #+BEGIN_SRC emacs-lisp
   ;; (setq-default display-line-numbers 'visual
@@ -41,24 +66,6 @@
   ;; (setq-default display-line-numbers nil
   ;;               display-line-numbers-widen nil)
   (add-hook 'prog-mode-hook (lambda () (setq-local display-line-numbers 'visual)))
-#+END_SRC
-** Hide the GUI elements (menu bar, scroll bar, and tool bar).
-#+BEGIN_SRC emacs-lisp
-  ;; (menu-bar-mode -1)
-  (toggle-scroll-bar -1)
-  (tool-bar-mode -1)
-#+END_SRC
-** Disable flashing/bell ringing when the cursor tries to go past the last line.
-#+BEGIN_SRC emacs-lisp
-(setq ring-bell-function 'ignore)
-#+END_SRC
-** Automatically select the help window buffer when it is opened.
-#+BEGIN_SRC emacs-lisp
-(setq help-window-select t)
-#+END_SRC
-** Add a few convenience keybindings to make things slightly more vim-like.
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+END_SRC
 ** Set UTF-8 encoding.
 #+BEGIN_SRC emacs-lisp
@@ -325,7 +332,7 @@ For visual-line mode, a custom function has to be defined.
 #+END_SRC
 *** Use =C-p= to open a fuzzy file finder, like vim's CtrlP.
  #+BEGIN_SRC emacs-lisp
-   (define-key evil-normal-state-map (kbd "C-p") 'helm-multi-files)
+   (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
  #+END_SRC
 ** =company=
 *** Completion engine. Use it as much as possible.
@@ -442,7 +449,11 @@ Use =<leader>o= to do the same, but for org headings.
 Kind of like helm
 #+begin_src emacs-lisp
   (use-package vertico
-    :init (vertico-mode))
+    :init (vertico-mode)
+    :config
+    (file-name-shadow-mode 1)
+    (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
+    )
   (use-package savehist
     :init (savehist-mode))
 #+end_src
@@ -451,8 +462,12 @@ Out of order searching in minibuffer
 #+begin_src emacs-lisp
   (use-package orderless
     :ensure t
+    :demand t
     :config
-    (setq completion-styles '(orderless basic)))
+    (setq completion-styles '(basic partial-completion substring initials flex orderless))
+    (setq orderless-matching-styles '(orderless-prefixes orderless-regexp))
+    )
+
 #+end_src
 ** =consult=
 #+begin_src emacs-lisp
@@ -464,14 +479,33 @@ Out of order searching in minibuffer
 #+begin_src emacs-lisp
   (use-package embark
     :ensure t
-    :bind (:map evil-normal-state-map
-                ("C-." . embark-act)
+    :bind (
            :map minibuffer-local-map
            ("C-c C-c" . embark-collect)
            ("C-c C-e" . embark-export)))
   (use-package embark-consult
     :ensure t)
+
+  (general-define-key
+   "C-." 'embark-act)
+
+  ;; don't confirm
+  (setf (alist-get 'kill-buffer embark-pre-action-hooks) ())
+
+  ;; don't embark--restart
+  (setf (alist-get 'kill-buffer embark-post-action-hooks) ())
+
+  ;; don't quit
+  (setq embark-quit-after-action '((kill-buffer . nil) (t . t)))
+
+  ;; bind C-k to embark kill-buffer
+  ;; (defvar my-consult-buffer-map
+  ;;   (let ((map (make-sparse-keymap)))
+  ;;     (keymap-set map "C-k" "C-. k")
+  ;;   map))
+  ;; (consult-customize consult-buffer :keymap my-consult-buffer-map)
 #+end_src
+
 ** =ace-window=
 #+begin_src emacs-lisp
   (use-package ace-window
@@ -479,7 +513,26 @@ Out of order searching in minibuffer
     :bind (:map evil-motion-state-map("C-w C-w" . ace-window))
     :config
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    (setq aw-scope 'frame)
     )
+#+end_src
+** Icons
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    :if (display-graphic-p))
+  (use-package all-the-icons-completion
+    :after (marginalia all-the-icons)
+    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+    :init (all-the-icons-completion-mode))
+#+end_src
+** =ivy=, =swiper=
+#+begin_src emacs-lisp
+  (use-package ivy)
+  (use-package swiper)
+  (general-define-key
+   :states '(motion normal)
+   "/" 'counsel-grep-or-swiper
+   "*" 'swiper-thing-at-point)
 #+end_src
 * Major modes
 ** =org-mode=
@@ -554,15 +607,15 @@ Use =org-indent-mode= for better list-like behavior, and nice indenting.
  #+END_SRC
 **** Highlight outlines of source blocks.
 #+BEGIN_SRC emacs-lisp
-  (defface org-block-begin-line
-    '((t (:underline nil :foreground "#008ED1")))
-    "Face used for the line delimiting the beginning of source blocks.")
-  ;; ;; (defface org-block-background
-  ;; ;;   '((t (:background "#FFFFEA")))
-  ;; ;;   "Face used for the source block background.")
-  (defface org-block-end-line
-    '((t (:overline nil :foreground "#008ED1")))
-    "Face used for the line delimiting the end of source blocks.")
+  ;; (defface org-block-begin-line
+  ;;   '((t (:underline nil :foreground "#008ED1")))
+  ;;   "Face used for the line delimiting the beginning of source blocks.")
+  ;; ;; ;; (defface org-block-background
+  ;; ;; ;;   '((t (:background "#FFFFEA")))
+  ;; ;; ;;   "Face used for the source block background.")
+  ;; (defface org-block-end-line
+  ;;   '((t (:overline nil :foreground "#008ED1")))
+  ;;   "Face used for the line delimiting the end of source blocks.")
 #+END_SRC
 *** Export settings
 **** Disable the HTML export postamble.
@@ -719,6 +772,18 @@ I like to use some non-insane keybindings for some org actions.
     (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
   (current-buffer)))
 #+END_SRC
+** =dired=
+#+begin_src emacs-lisp
+  (setq delete-by-moving-to-trash 1
+        dired-dwim-target 1)
+
+  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
+  (setq dired-guess-shell-alist-user
+        '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open")
+          ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
+                  (".*" "xdg-open")))
+#+end_src
 * UI options
 ** Theme
 #+BEGIN_SRC emacs-lisp
@@ -841,9 +906,9 @@ Highlight characters that go past 80 columns.
    (global-subword-mode 1)
    (delight 'subword-mode)
  #+END_SRC
-** Use a 5 line top/bottom margin.
+** Use a top/bottom margin.
  #+BEGIN_SRC emacs-lisp
-   (setq scroll-margin 5)
+   (setq scroll-margin 2)
  #+END_SRC
 ** Keep the cursor in the same spot when scrolling.
  #+BEGIN_SRC emacs-lisp
