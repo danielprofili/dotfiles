@@ -18,7 +18,7 @@ do
         break
     fi
 done
-echo $i
+# echo $i
 # exit 0
 
 
