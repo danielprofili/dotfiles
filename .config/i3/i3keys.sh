@@ -4,7 +4,7 @@
 #st -e vim $(find ~/.config/ -type f -name "config" | rofi -dmenu)
 
 # Get bindings from i3 config file
-mod=$(grep 'set $mod ' ~/.config/i3/config | cut -f3- -d" ")
+mod=$(grep 'set $mod ' ~/.config/i3/config | cut -f3- -d" " | sed "s/Mod4/S/" | sed "s/Mod1/Alt/")
 binds=$(grep '^bindsym' ~/.config/i3/config | sed "s/\$mod/${mod}/" | cut -f2- -d" ")
 keys=$(echo "${binds}" | cut -f2 -d" ")
 cmds=$(echo "${binds}" | cut -f3- -d" ")
