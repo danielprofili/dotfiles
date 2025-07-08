@@ -14,10 +14,11 @@
  '(helm-M-x-show-short-doc t)
  '(helm-completion-style 'emacs)
  '(helm-follow-mode-persistent t)
+ '(helm-minibuffer-history-key "M-p")
  '(helm-source-names-using-follow '("switch-to-buffer" "Buffers"))
  '(org-startup-folded t)
  '(package-selected-packages
-   '(nerd-icons pdf-tools helm-swoop consult-dir ivy-avy counsel amx general all-the-icons-completion all-the-icons ace-window embark-consult orderless consult vertico marginalia embark ox-reveal org-tree-slide epresent expand-region evil-smartparens smartparens smex w3m gruvbox-theme theme-magic xresources-theme markdown-mode mood-line modus-themes eaf-browser yasnippet-snippets writeroom-mode which-key telephone-line projectile ox-twbs org-ref org-evil magit ivy highlight-indent-guides helm focus evil-surround evil-better-visual-line disable-mouse dired-git-info delight company benchmark-init backward-forward auctex ample-theme))
+   '(dired-subtree evil-collection nerd-icons pdf-tools helm-swoop consult-dir ivy-avy counsel amx general all-the-icons-completion all-the-icons ace-window embark-consult orderless consult vertico marginalia embark ox-reveal org-tree-slide epresent expand-region evil-smartparens smartparens smex w3m gruvbox-theme theme-magic xresources-theme markdown-mode mood-line modus-themes eaf-browser yasnippet-snippets writeroom-mode which-key telephone-line projectile ox-twbs org-ref org-evil magit ivy highlight-indent-guides helm focus evil-surround evil-better-visual-line disable-mouse dired-git-info delight company benchmark-init backward-forward auctex ample-theme))
  '(use-short-answers t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

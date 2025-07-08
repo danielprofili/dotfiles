@@ -155,7 +155,13 @@
 #+END_SRC
 **** Initialize =evil=.
 #+BEGIN_SRC emacs-lisp
+  (setq evil-want-keybinding nil
+        evil-want-integration t)
   (use-package evil)
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config (evil-collection-init))
 #+END_SRC
 **** Start =evil-mode=!
 #+BEGIN_SRC emacs-lisp
@@ -540,6 +546,17 @@ Out of order searching in minibuffer
    :states '(motion normal)
    "/" 'counsel-grep-or-swiper
    "*" 'swiper-thing-at-point)
+#+end_src
+** =dired-subtree=
+#+begin_src emacs-lisp
+  (use-package dired-subtree
+    :ensure t
+    :after dired
+    :bind (:map dired-mode-map
+               ("<tab>" . dired-subtree-toggle) 
+               ("<backtab>" . dired-subtree-cycle)
+   ) 
+  )
 #+end_src
 * Major modes
 ** =org-mode=
