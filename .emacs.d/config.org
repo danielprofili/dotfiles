@@ -1,6 +1,39 @@
 #+Title: Configuration
 #+AUTHOR: Daniel Profili
 
+* Package Setup
+** Add =org= and =melpa= to package archives.
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+#+END_SRC
+** Don't enable packages when emacs starts; do it lazily.
+#+BEGIN_SRC emacs-lisp
+(setq package-enable-at-startup nil)
+#+END_SRC
+** Always ensure and demand packages
+#+begin_src emacs-lisp
+  (setq use-package-always-ensure t)
+#+end_src
+** Initialize packages and install =use-package= if necessary.
+#+BEGIN_SRC emacs-lisp
+  (package-initialize)
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (eval-when-compile
+    (require 'use-package))
+
+  (setq use-package-verbose t)
+
+  ; use-package installs packages automatically if they are not installed
+  (setq use-package-always-ensure t)
+#+END_SRC
+
 * General Emacs settings
 ** Initial setup
 *** General Emacs settings.
@@ -32,7 +65,9 @@
     (display-time-mode t)
     (save-place-mode 1)
     (toggle-scroll-bar -1)
+    (scroll-bar-mode -1)
     (tool-bar-mode -1)
+    (menu-bar-mode -1)
     )
 #+end_src
 *** Global keybindings
@@ -103,38 +138,6 @@
   ;; (set-frame-parameter nil 'alpha 100)
   (add-to-list 'default-frame-alist '(alpha-background . 90))
 #+end_src
-* Package Management
-** Add =org= and =melpa= to package archives.
-#+BEGIN_SRC emacs-lisp
-(require 'package)
-
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-#+END_SRC
-** Don't enable packages when emacs starts; do it lazily.
-#+BEGIN_SRC emacs-lisp
-(setq package-enable-at-startup nil)
-#+END_SRC
-** Always ensure and demand packages
-#+begin_src emacs-lisp
-  (setq use-package-always-ensure t)
-#+end_src
-** Initialize packages and install =use-package= if necessary.
-#+BEGIN_SRC emacs-lisp
-  (package-initialize)
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-
-  (eval-when-compile
-    (require 'use-package))
-
-  (setq use-package-verbose t)
-
-  ; use-package installs packages automatically if they are not installed
-  (setq use-package-always-ensure t)
-#+END_SRC
 * Packages
 ** =diminish=
 *** Hide some useless minor modes from the modeline.
@@ -332,7 +335,7 @@ For visual-line mode, a custom function has to be defined.
 #+END_SRC
 *** Use =C-p= to open a fuzzy file finder, like vim's CtrlP.
  #+BEGIN_SRC emacs-lisp
-   (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
+   ;; (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
  #+END_SRC
 ** =company=
 *** Completion engine. Use it as much as possible.
@@ -473,7 +476,7 @@ Out of order searching in minibuffer
 #+begin_src emacs-lisp
     (use-package consult
       :ensure t)
-  ;; (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
+   (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
 #+end_src
 ** =embark=
 #+begin_src emacs-lisp
@@ -527,7 +530,11 @@ Out of order searching in minibuffer
 #+end_src
 ** =ivy=, =swiper=
 #+begin_src emacs-lisp
-  (use-package ivy)
+  (use-package ivy
+    :ensure t
+    :config
+    (setq ivy-use-virtual-buffers t
+          ivy-count-format "%d/%d "))
   (use-package swiper)
   (general-define-key
    :states '(motion normal)
