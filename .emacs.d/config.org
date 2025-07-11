@@ -1,6 +1,14 @@
 #+Title: Configuration
 #+AUTHOR: Daniel Profili
 
+ ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄    ▄ ▄▄▄▄▄▄▄ ▄▄▄ ▄▄▄▄▄▄▄      ▄▄▄▄▄▄▄ ▄▄▄▄▄▄   ▄▄▄▄▄▄▄ 
+█       █       █  █  █ █       █   █       █    █       █   ▄  █ █       █
+█       █   ▄   █   █▄█ █    ▄▄▄█   █   ▄▄▄▄█    █   ▄   █  █ █ █ █   ▄▄▄▄█
+█     ▄▄█  █ █  █       █   █▄▄▄█   █  █  ▄▄     █  █ █  █   █▄▄█▄█  █  ▄▄ 
+█    █  █  █▄█  █  ▄    █    ▄▄▄█   █  █ █  █▄▄▄ █  █▄█  █    ▄▄  █  █ █  █
+█    █▄▄█       █ █ █   █   █   █   █  █▄▄█ █   ██       █   █  █ █  █▄▄█ █
+█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█▄█  █▄▄█▄▄▄█   █▄▄▄█▄▄▄▄▄▄▄█▄▄▄██▄▄▄▄▄▄▄█▄▄▄█  █▄█▄▄▄▄▄▄▄█
+
 * Package Setup
 ** Add =org= and =melpa= to package archives.
 #+BEGIN_SRC emacs-lisp
@@ -344,17 +352,16 @@ For visual-line mode, a custom function has to be defined.
    ;; (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
  #+END_SRC
 ** =company=
-*** Completion engine. Use it as much as possible.
-  #+BEGIN_SRC emacs-lisp
-    (use-package company
-      :diminish company-mode)
-    (add-hook 'after-init-hook 'global-company-mode)
-  #+END_SRC
-*** Use more vim-like commands while in the completion menu.
-  #+BEGIN_SRC emacs-lisp
-    (define-key company-active-map (kbd "C-j") 'company-select-next)
-    (define-key company-active-map (kbd "C-k") 'company-select-previous)
-  #+END_SRC
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :diminish company-mode)
+  (add-hook 'after-init-hook 'global-company-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (define-key company-active-map (kbd "C-j") 'company-select-next)
+  (define-key company-active-map (kbd "C-k") 'company-select-previous)
+#+END_SRC
 ** =avy=
 =avy= is a package for navigating the screen by typing fragments of words.
 #+BEGIN_SRC emacs-lisp
@@ -558,6 +565,13 @@ Out of order searching in minibuffer
    ) 
   )
 #+end_src
+** =magit=
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t
+    ;; :config (add-to-list 'evil-motion-state-modes 'magit-mode)
+    )
+#+end_src
 * Major modes
 ** =org-mode=
 *** Display settings
@@ -701,7 +715,7 @@ I like to use some non-insane keybindings for some org actions.
         (kbd "C-k") 'org-metaup
     )
 #+END_SRC
-*** Templates
+*** Capture templates
 #+BEGIN_SRC emacs-lisp
   (setq dp/template-dir "~/.emacs.d/org-templates")
   (setq org-capture-templates
@@ -798,6 +812,11 @@ I like to use some non-insane keybindings for some org actions.
 #+END_SRC
 ** =dired=
 #+begin_src emacs-lisp
+  (use-package dired
+    :ensure nil
+    :bind
+    (:map dired-mode-map
+          ("C-o" . nil)))
   (setq delete-by-moving-to-trash 1
         dired-dwim-target 1)
 
@@ -806,6 +825,7 @@ I like to use some non-insane keybindings for some org actions.
   (setq dired-guess-shell-alist-user
         '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open")
           ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
+          ("\\.\\(pdf\\)" "zathura" "xdg-open")
                   (".*" "xdg-open")))
 #+end_src
 * UI options
@@ -893,12 +913,12 @@ Highlight characters that go past 80 columns.
 ** Indent guides
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-indent-guides)
-  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-method 'column)
   (setq highlight-indent-guides-responsive 'stack)
   (setq highlight-indent-guides-delay 0)
   ; Use it in programming and org-mode
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (add-hook 'org-mode-hook 'highlight-indent-guides-mode)
+  ;; (add-hook 'org-mode-hook 'highlight-indent-guides-mode)
 #+END_SRC
 ** Show matching parenthesis pairs.
 #+BEGIN_SRC emacs-lisp
