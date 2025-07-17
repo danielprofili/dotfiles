@@ -36,7 +36,7 @@
   (eval-when-compile
     (require 'use-package))
 
-  (setq use-package-verbose t)
+  ;; (setq use-package-verbose t)
 
   ; use-package installs packages automatically if they are not installed
   (setq use-package-always-ensure t)
@@ -78,11 +78,23 @@
     (menu-bar-mode -1)
     )
 #+end_src
-*** Global keybindings
+*** =general.el= and some global keybindings
 #+begin_src emacs-lisp
-  (use-package general)
+  (use-package general
+    :ensure t
+    :init 
+    (with-eval-after-load 'evil
+      (general-evil-setup))
+    (general-auto-unbind-keys)
+    :config
+    (general-override-mode)
+    (general-create-definer my-leader-def
+      :keymaps 'override
+      :prefix "\\")
+    )
   (general-define-key
-   ;; "<escape>" 'keyboard-escape-quit
+   :keymaps 'global
+   ;;"<escape>" 'keyboard-escape-quit
    "C-M-;" 'repeat-complex-command
    "M-;" 'execute-extended-command
    "C-f" 'avy-goto-char-timer
@@ -90,6 +102,8 @@
    "DEL" 'ace-window
    )
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  ;; (keymap-unset evil-motion-state-map "<RET>" t)
 #+end_src
 ** Start the emacs server, if it isn't already running.
 #+BEGIN_SRC emacs-lisp
@@ -190,39 +204,35 @@ This is a package designed to improve visual-line-mode slightly, by adding visua
     (evil-better-visual-line-on))
 #+END_SRC
 *** Leader key
-**** Create a new keymap for the leader key I like (=\=). 
-This allows vim-like leader binding =<leader>-something= by using the =leader-backslash-map= in keymaps.
+**** Create a new keymap for the leader key (=\=). 
  #+BEGIN_SRC emacs-lisp
-   (setq leader "\\")
-   (defvar leader-backslash-map (make-sparse-keymap)
-     "Keymap for backslash leader key shortcuts.")
-
-   (define-key evil-normal-state-map (kbd leader) leader-backslash-map)
  #+END_SRC
 *** Keybindings
 **** Compile shortcuts
 ***** Shortcuts for =compile= and =recompile=
 #+BEGIN_SRC emacs-lisp
-  ;; (evil-global-set-key 'normal (kbd "M-g r") 'recompile)
-  ;; (evil-global-set-key 'normal (kbd "M-g c") 'compile)
-  (define-key leader-backslash-map (kbd "ee") 'compile)
-  (define-key leader-backslash-map (kbd "re") 'recompile)
+  (my-leader-def
+    :keymaps 'normal
+    "ee" 'compile
+    "re" 'recompile)
 #+END_SRC
 
 **** Define shortcut for editing configuration.
  #+BEGIN_SRC emacs-lisp
-   (define-key leader-backslash-map "ev" '(lambda () (interactive) (find-file-other-window "~/.emacs.d/config.org")))
-   (define-key leader-backslash-map "sv" '(lambda () (interactive) (load user-init-file)))
+   (my-leader-def
+     :keymaps 'normal
+     "ev" '(lambda () (interactive) (find-file-other-window "~/.emacs.d/config.org"))
+     "sv" '(lambda () (interactive) (load user-init-file)))
  #+END_SRC
 **** Bind enter to =newline-and-indent=.
 **** Move up/down by visual lines in normal, visual, and visual line modes.
 #+BEGIN_SRC emacs-lisp
-  (define-key evil-motion-state-map "j" 'evil-next-visual-line)
-  (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
-  (define-key evil-visual-state-map "j" 'evil-next-visual-line)
-  (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
-  ;; (define-key evil-insert-state-map (kbd "<C-l>") 'evil-forward-char)
-  ;; (define-key evil-insert-state-map (kbd "<C-h>") 'evil-backward-char)
+  (general-mmap
+   "j" 'evil-next-visual-line
+   "k" 'evil-previous-visual-line)
+  (general-vmap 
+   "j" 'evil-next-visual-line
+  "k" 'evil-previous-visual-line)
 #+END_SRC
 
 For visual-line mode, a custom function has to be defined.
@@ -279,18 +289,19 @@ For visual-line mode, a custom function has to be defined.
 #+END_SRC
 **** Semicolon to colon
 #+BEGIN_SRC emacs-lisp
-  (define-key evil-normal-state-map ";" 'evil-ex)
+  (general-nmap ";" 'evil-ex)
 #+END_SRC
 **** =C-i= remapping
 #+begin_src emacs-lisp
-  (define-key evil-motion-state-map (kbd "C-i") 'evil-jump-forward)
+  (general-mmap "C-i" 'evil-jump-forward)
 #+end_src
 **** Scroll up and down easier
 #+begin_src emacs-lisp
-  (evil-global-set-key 'normal (kbd "J") 'evil-scroll-down)
-  (evil-global-set-key 'motion (kbd "J") 'evil-scroll-down)
-  (define-key evil-motion-state-map (kbd "J") 'evil-scroll-down)
-  (define-key evil-motion-state-map (kbd "K") 'evil-scroll-up)
+  (general-define-key 
+   :states '(normal motion)
+   "J" 'evil-scroll-down
+   "K" 'evil-scroll-up
+   )
 #+end_src
 ** =helm=
 *** Initialize =helm=, use it as much as possible, and use it for =M-x= by default.
@@ -300,7 +311,10 @@ For visual-line mode, a custom function has to be defined.
                 ;; :bind (("M-x" . helm-M-x))
                 :delight helm-mode
                 ;:init (helm-mode 1)
+                :config (helm-autoresize-mode t)
                 )
+
+   (general-nmap "C-p" 'helm-mini)
  #+END_SRC
 *** vim-like bindings in helm
 #+BEGIN_SRC emacs-lisp
@@ -342,15 +356,7 @@ For visual-line mode, a custom function has to be defined.
     ("v" helm-execute-persistent-action)
     ("d" helm-persistent-delete-marked)
     ("f" helm-follow-mode))
-
-  ;; (define-key helm-map (kbd "<escape>") 'helm-like-unite/body)
-  ;; (define-key helm-map (kbd "C-k") 'helm-like-unite/body)
-  ;; (define-key helm-map (kbd "C-o") 'helm-like-unite/body)
 #+END_SRC
-*** Use =C-p= to open a fuzzy file finder, like vim's CtrlP.
- #+BEGIN_SRC emacs-lisp
-   ;; (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
- #+END_SRC
 ** =company=
 #+BEGIN_SRC emacs-lisp
   (use-package company
@@ -359,8 +365,11 @@ For visual-line mode, a custom function has to be defined.
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-  (define-key company-active-map (kbd "C-j") 'company-select-next)
-  (define-key company-active-map (kbd "C-k") 'company-select-previous)
+  (general-define-key
+   :keymaps 'company-active-map
+   "C-j" 'company-select-next
+   "C-k" 'company-select-previous
+   )
 #+END_SRC
 ** =avy=
 =avy= is a package for navigating the screen by typing fragments of words.
@@ -370,12 +379,14 @@ For visual-line mode, a custom function has to be defined.
 
 Use =F= to type characters and show shortcuts to jump to all visible on screen (like in cVim).
 #+BEGIN_SRC emacs-lisp
-  (define-key evil-normal-state-map (kbd "F") 'avy-goto-char-timer)
+  (general-nmap "F" 'avy-goto-char-timer)
 #+END_SRC
 
 Use =<leader>o= to do the same, but for org headings.
 #+BEGIN_SRC emacs-lisp
-  (define-key leader-backslash-map "o" 'avy-org-goto-heading-timer)
+  (my-leader-def :keymaps 'org-mode-map
+    "o" 'avy-org-goto-heading-timer
+    )
 #+END_SRC
 ** =evil-surround=
 #+BEGIN_SRC emacs-lisp
@@ -487,9 +498,13 @@ Out of order searching in minibuffer
 #+end_src
 ** =consult=
 #+begin_src emacs-lisp
-    (use-package consult
-      :ensure t)
-   (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
+     (use-package consult
+       :ensure t)
+    ;; (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
+
+  (general-define-key
+     :states '(motion normal)
+     "C-/" 'consult-line)
 #+end_src
 ** =embark=
 #+begin_src emacs-lisp
@@ -503,6 +518,7 @@ Out of order searching in minibuffer
     :ensure t)
 
   (general-define-key
+   :states '(motion normal insert)
    "C-." 'embark-act)
 
   ;; don't confirm
@@ -572,12 +588,16 @@ Out of order searching in minibuffer
     ;; :config (add-to-list 'evil-motion-state-modes 'magit-mode)
     )
 #+end_src
+** =amx=
+#+begin_src emacs-lisp
+  (use-package amx)
+#+end_src
 * Major modes
 ** =org-mode=
 *** Display settings
 **** Hide emphasis markers (/, =, *, etc).
  #+BEGIN_SRC emacs-lisp
- (setq org-hide-emphasis-markers nil)
+ (setq org-hide-emphasis-markers t)
  #+END_SRC
 **** Disable line numbers in =org-mode=.
  #+BEGIN_SRC emacs-lisp
@@ -655,6 +675,14 @@ Use =org-indent-mode= for better list-like behavior, and nice indenting.
   ;;   '((t (:overline nil :foreground "#008ED1")))
   ;;   "Face used for the line delimiting the end of source blocks.")
 #+END_SRC
+**** Indentation
+#+begin_src emacs-lisp
+  (setq org-startup-indented t)
+  (use-package org-indent
+    :ensure nil
+    :diminish
+    )
+#+end_src
 *** Export settings
 **** Disable the HTML export postamble.
  #+BEGIN_SRC emacs-lisp
@@ -702,17 +730,17 @@ Use =org-indent-mode= for better list-like behavior, and nice indenting.
        "\\end{frame}")))
 #+END_SRC
 *** Keybindings
-I like to use some non-insane keybindings for some org actions.
 #+BEGIN_SRC emacs-lisp
-      (evil-define-key 'normal org-mode-map
-        (kbd "TAB") 'org-cycle
-        ">" 'org-shiftmetaright
-        "<" 'org-shiftmetaleft
-        (kbd "SPC") 'org-todo
-        (kbd "RET") 'evil-toggle-fold
-        (kbd "S-RET") 'org-meta-return
-        (kbd "C-j") 'org-metadown
-        (kbd "C-k") 'org-metaup
+  (general-nmap
+    :keymaps 'org-mode-map
+    "TAB" 'org-cycle
+    ">" 'org-shiftmetaright
+    "<" 'org-shiftmetaleft
+    "SPC" 'org-todo
+    "RET" 'evil-toggle-fold
+    "S-RET" 'org-meta-return
+    "C-j" 'org-metadown
+    "C-k" 'org-metaup
     )
 #+END_SRC
 *** Capture templates
@@ -960,15 +988,20 @@ Highlight characters that go past 80 columns.
  #+END_SRC
 ** Bind =<leader> c <space>= to toggle commenting in visual mode.
  #+BEGIN_SRC emacs-lisp
-   (define-key evil-visual-state-map (kbd (concat leader "c SPC"))
-     'comment-or-uncomment-region)
+   (my-leader-def
+     :modes 'visual
+     "c-SPC" 'comment-or-uncomment-region
+     :modes 'normal
+     "c-SPC" 'normal-mode-toggle-comment
+     )
+
    (defun normal-mode-toggle-comment ()
      "Toggles the comment state of a single line in normal mode."
      (interactive)
      (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
 
-   (define-key evil-normal-state-map (kbd (concat leader "c SPC"))
-     'normal-mode-toggle-comment)
+   ;; (define-key evil-normal-state-map (kbd (concat leader "c SPC"))
+   ;;   'normal-mode-toggle-comment)
  #+END_SRC
 ** Use spaces and not tabs.
  #+BEGIN_SRC emacs-lisp
@@ -993,40 +1026,6 @@ Highlight characters that go past 80 columns.
   (use-package expand-region
       :bind ("C-=" . er/expand-region))
 #+end_src
-* Writing
-** Modes 
-#+BEGIN_SRC emacs-lisp
-  (use-package writeroom-mode)
-  (use-package focus)
-#+END_SRC
-** Prose mode
-Custom minor mode
-#+BEGIN_SRC emacs-lisp
-  ;(load "~/.emacs.d/elisp/prose-mode.el")
-#+END_SRC
-*** Open my home writing directory.
-#+BEGIN_SRC emacs-lisp
-  (setq dp/writing-home "~/Dropbox/writing")
-  (defun dp/open-writing-home ()
-    "Opens the writing home directory in dired."
-    (interactive)
-    (dired dp/writing-home))
-  (define-key leader-backslash-map (kbd "wh") 'dp/open-writing-home)
-#+END_SRC
-*** Toggle a writing mode with =writeroom-mode=.
-Bind a key combination to toggle.
-#+BEGIN_SRC emacs-lisp
-(define-key leader-backslash-map "wm" 'writeroom-mode)
-#+END_SRC
-** Templates 
-I use =hydra= to manage templates.
-#+BEGIN_SRC emacs-lisp
-  (use-package hydra)
-#+END_SRC
-*** Load hydras for templates
-#+BEGIN_SRC emacs-lisp
-  (load "~/.emacs.d/templates/wiki/hydra_wiki.el")
-#+END_SRC
 * Startup
 ** =dired= on startup.
 #+BEGIN_SRC emacs-lisp
