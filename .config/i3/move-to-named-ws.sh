@@ -11,10 +11,10 @@ function gen_workspaces()
 }
 
 # echo -e $(gen_workspaces)
-# new=" New"
+new="󰎔 Empty"
 # WORKSPACE=$( (echo "$new"; gen_workspaces)  | rofi -dmenu -i -p "Move to:")
-WORKSPACE=$( (gen_workspaces)  | rofi -dmenu -i -p "Move to:")
-
+# WORKSPACE=$( (gen_workspaces)  | rofi -dmenu -i -p "Move to:")
+WORKSPACE=$( (gen_workspaces; echo "$new")  | rofi -dmenu -i -p "Move to:")
 # if [[ $WORKSPACE == $new ]]
 
 # pad with spaces to make the regex work
@@ -31,13 +31,17 @@ then
     # new workspace name typed
     # call the empty workspace script, which returns only the new
     # number if any command line argument is given
-    newnum=$(~/.config/i3/empty_workspace.sh kasjdf)
+    newnum=$(~/.config/i3/empty_workspace.sh 0)
     # echo $newnum
     # NEWNAME="`zenity --entry --text 'New workspace name: '`"
     # if [[ -n "${NEWNAME}" ]]
     # then
     #     WORKSPACE=$newnum:$NEWNAME
     # fi
+    if [[ $WORKSPACE == $new ]]
+    then
+        WORKSPACE=$newnum
+    fi
     WORKSPACE=$newnum:$WORKSPACE
 
     # DEBUG
