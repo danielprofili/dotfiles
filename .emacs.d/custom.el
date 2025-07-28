@@ -26,7 +26,7 @@
  '(org-src-ask-before-returning-to-edit-buffer nil)
  '(org-startup-folded t)
  '(package-selected-packages
-   '(ivy-hydra ivy-explorer dired-preview standard-themes spacious-padding org-modern dired dired-subtree evil-collection nerd-icons pdf-tools helm-swoop consult-dir ivy-avy counsel amx general all-the-icons-completion all-the-icons ace-window embark-consult orderless consult vertico marginalia embark ox-reveal org-tree-slide epresent expand-region evil-smartparens smartparens smex w3m gruvbox-theme theme-magic xresources-theme markdown-mode mood-line modus-themes eaf-browser yasnippet-snippets writeroom-mode which-key telephone-line projectile ox-twbs org-ref org-evil magit ivy highlight-indent-guides helm focus evil-surround evil-better-visual-line disable-mouse dired-git-info delight company benchmark-init backward-forward auctex ample-theme))
+   '(org-present rainbow-mode org-variable-pitch backward-forward-mode ivy-hydra ivy-explorer dired-preview standard-themes spacious-padding org-modern dired dired-subtree evil-collection nerd-icons pdf-tools helm-swoop consult-dir ivy-avy counsel amx general all-the-icons-completion all-the-icons ace-window embark-consult orderless consult vertico marginalia embark ox-reveal org-tree-slide epresent expand-region evil-smartparens smartparens smex w3m gruvbox-theme theme-magic xresources-theme markdown-mode mood-line modus-themes eaf-browser yasnippet-snippets writeroom-mode which-key telephone-line projectile ox-twbs org-ref org-evil magit ivy highlight-indent-guides helm focus evil-surround evil-better-visual-line disable-mouse dired-git-info delight company benchmark-init backward-forward auctex ample-theme))
  '(python-indent-guess-indent-offset-verbose nil)
  '(use-short-answers t))
 (custom-set-faces
@@ -35,8 +35,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default: background)
+ '(fixed-pitch ((t (:family "FantasqueSansM Nerd Font"))))
+ '(helm-M-x-short-doc ((t (:foreground "dark violet" :box nil))))
+ '(helm-match ((t (:extend t :foreground "magenta"))))
  '(helm-selection ((t (:extend t :background "white smoke" :distant-foreground "black"))))
  '(helm-source-header ((t (:extend t :background "dark orchid" :foreground "white" :weight normal :height 1.0 :family "FantasqueSansM Nerd Font"))))
+ '(modus-themes-fixed-pitch ((t (:inherit fixed-pitch))) t)
+ '(org-block ((t (:inherit (modus-themes-fixed-pitch fixed-pitch) :extend t :background "#1d2235"))))
+ '(org-default ((t (:inherit default))))
  '(org-document-title ((t (:inherit default :weight bold :height 1.5 :underline nil))))
  '(org-ellipsis ((t (:underline nil))))
  '(org-level-1 ((t (:inherit default :weight bold :height 1.75 :foreground "DarkOrchid1"))))
@@ -46,4 +52,6 @@
  '(org-level-5 ((t (:inherit default :weight bold))))
  '(org-level-6 ((t (:inherit default :weight bold))))
  '(org-level-7 ((t (:inherit default :weight bold))))
- '(org-level-8 ((t (:inherit default :weight bold)))))
+ '(org-level-8 ((t (:inherit default :weight bold))))
+ '(org-meta-line ((t (:inherit (fixed-pitch modus-themes-fixed-pitch) :foreground "#989898"))))
+ '(variable-pitch ((t (:family "sans")))))

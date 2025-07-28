@@ -1,13 +1,15 @@
 #+Title: Configuration
 #+AUTHOR: Daniel Profili
 
- ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄    ▄ ▄▄▄▄▄▄▄ ▄▄▄ ▄▄▄▄▄▄▄      ▄▄▄▄▄▄▄ ▄▄▄▄▄▄   ▄▄▄▄▄▄▄ 
-█       █       █  █  █ █       █   █       █    █       █   ▄  █ █       █
-█       █   ▄   █   █▄█ █    ▄▄▄█   █   ▄▄▄▄█    █   ▄   █  █ █ █ █   ▄▄▄▄█
-█     ▄▄█  █ █  █       █   █▄▄▄█   █  █  ▄▄     █  █ █  █   █▄▄█▄█  █  ▄▄ 
-█    █  █  █▄█  █  ▄    █    ▄▄▄█   █  █ █  █▄▄▄ █  █▄█  █    ▄▄  █  █ █  █
-█    █▄▄█       █ █ █   █   █   █   █  █▄▄█ █   ██       █   █  █ █  █▄▄█ █
-█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█▄█  █▄▄█▄▄▄█   █▄▄▄█▄▄▄▄▄▄▄█▄▄▄██▄▄▄▄▄▄▄█▄▄▄█  █▄█▄▄▄▄▄▄▄█
+ #+begin_src emacs-lisp
+   ;; ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄    ▄ ▄▄▄▄▄▄▄ ▄▄▄ ▄▄▄▄▄▄▄      ▄▄▄▄▄▄▄ ▄▄▄▄▄▄   ▄▄▄▄▄▄▄ 
+   ;;█       █       █  █  █ █       █   █       █    █       █   ▄  █ █       █
+   ;;█       █   ▄   █   █▄█ █    ▄▄▄█   █   ▄▄▄▄█    █   ▄   █  █ █ █ █   ▄▄▄▄█
+   ;;█     ▄▄█  █ █  █       █   █▄▄▄█   █  █  ▄▄     █  █ █  █   █▄▄█▄█  █  ▄▄ 
+   ;;█    █  █  █▄█  █  ▄    █    ▄▄▄█   █  █ █  █▄▄▄ █  █▄█  █    ▄▄  █  █ █  █
+   ;;█    █▄▄█       █ █ █   █   █   █   █  █▄▄█ █   ██       █   █  █ █  █▄▄█ █
+   ;;█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█▄█  █▄▄█▄▄▄█   █▄▄▄█▄▄▄▄▄▄▄█▄▄▄██▄▄▄▄▄▄▄█▄▄▄█  █▄█▄▄▄▄▄▄▄█
+ #+end_src
 
 * Package Setup
 ** Add =org= and =melpa= to package archives.
@@ -41,7 +43,6 @@
   ; use-package installs packages automatically if they are not installed
   (setq use-package-always-ensure t)
 #+END_SRC
-
 * General Emacs settings
 ** Initial setup
 *** General Emacs settings.
@@ -89,7 +90,7 @@
     :config
     (general-override-mode)
     (general-create-definer my-leader-def
-      :keymaps 'override
+      :keymaps '(visual normal motion)
       :prefix "\\")
     )
   (general-define-key
@@ -303,6 +304,10 @@ For visual-line mode, a custom function has to be defined.
    "K" 'evil-scroll-up
    )
 #+end_src
+**** Yank
+#+begin_src emacs-lisp
+  (general-mmap "Y" 'evil-yank-line)
+#+end_src
 ** =helm=
 *** Initialize =helm=, use it as much as possible, and use it for =M-x= by default.
  #+BEGIN_SRC emacs-lisp
@@ -502,9 +507,9 @@ Out of order searching in minibuffer
        :ensure t)
     ;; (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
 
-  (general-define-key
-     :states '(motion normal)
-     "C-/" 'consult-line)
+  ;; (general-define-key
+     ;; :states '(motion normal)
+     ;; "C-/" 'consult-line)
 #+end_src
 ** =embark=
 #+begin_src emacs-lisp
@@ -567,8 +572,8 @@ Out of order searching in minibuffer
   (use-package swiper)
   (general-define-key
    :states '(motion normal)
-   "/" 'counsel-grep-or-swiper
-   "*" 'swiper-thing-at-point)
+   "C-/" 'counsel-grep-or-swiper
+   "C-*" 'swiper-thing-at-point)
 #+end_src
 ** =dired-subtree=
 #+begin_src emacs-lisp
@@ -592,13 +597,17 @@ Out of order searching in minibuffer
 #+begin_src emacs-lisp
   (use-package amx)
 #+end_src
+** =backward-forward=
+#+begin_src emacs-lisp
+  (use-package backward-forward)
+#+end_src
 * Major modes
 ** =org-mode=
 *** Display settings
 **** Hide emphasis markers (/, =, *, etc).
- #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
  (setq org-hide-emphasis-markers t)
- #+END_SRC
+#+END_SRC
 **** Disable line numbers in =org-mode=.
  #+BEGIN_SRC emacs-lisp
  (add-hook 'org-mode-hook (lambda () (setq-local display-line-numbers nil)))
@@ -861,6 +870,7 @@ Use =org-indent-mode= for better list-like behavior, and nice indenting.
 #+BEGIN_SRC emacs-lisp
   (use-package modus-themes)
   (load-theme 'modus-vivendi-tinted t)
+  (setq modus-themes-variable-pitch-ui t)
 #+END_SRC
 ** Font
 Use my preferred font if possible. Otherwise use basic monospace.
@@ -990,10 +1000,11 @@ Highlight characters that go past 80 columns.
  #+BEGIN_SRC emacs-lisp
    (my-leader-def
      :modes 'visual
-     "c-SPC" 'comment-or-uncomment-region
+     "SPC" 'comment-or-uncomment-region
      :modes 'normal
-     "c-SPC" 'normal-mode-toggle-comment
+     "SPC" 'normal-mode-toggle-comment
      )
+
 
    (defun normal-mode-toggle-comment ()
      "Toggles the comment state of a single line in normal mode."
