@@ -9,7 +9,7 @@ output=$(echo $ws | jq '.output')
 ws_same_output=$(i3-msg -t get_workspaces | jq ".[] | select(.output==${output})" | jq '.name')
 ws_current=$(echo $ws | jq '.name')
 # echo $ws_same_output
-ws_array=()
+WS_ARRAY=()
 wsnumber=$(echo $WS | cut -d: -f1)
 # workspaces=$(gen_workspaces)
 # echo $workspaces
@@ -43,6 +43,7 @@ if [[ $1 == "left" ]]; then
 elif [[ $1 == "right" ]]; then
     # swap places (workspace number) with the workspace to the right
     # on the current monitor
+    echo $(echo $ws_same_output | sed 's/ /\n/g' | grep -A 1 $ws_current)
     swap=${WS_ARRAY[-1]}
     # echo $swap
     len=$((${#WS_ARRAY[@]}-1))
