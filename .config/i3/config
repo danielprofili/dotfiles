@@ -196,6 +196,8 @@ bindsym $mod+r exec --no-startup-id ~/.config/i3/rename_workspace.sh
 # bindsym $mod+Shift+Tab exec --no-startup-id python ~/.config/i3/cycle-workspace.py
 bindsym $mod+Shift+Tab move workspace to output right
 bindsym $mod+Shift+m exec --no-startup-id ~/.config/i3/move-to-named-ws.sh
+bindsym $mod+Ctrl+comma exec --no-startup-id ~/.config/i3/reorder_workspace.sh left
+bindsym $mod+Ctrl+period exec --no-startup-id ~/.config/i3/reorder_workspace.sh right
 bindsym $mod+Ctrl+space exec --no-startup-id ~/bin/emacs.sh
 bindsym $mod+Shift+e move container to output left
 bindsym $mod+x focus output next
@@ -372,4 +374,6 @@ client.background       $bg
 
 # Script to start polybar bar(s)
 exec_always --no-startup-id source ~/bin/start_polybar.sh
+
+# Screensaver
 exec --no-startup-id xscreensaver
