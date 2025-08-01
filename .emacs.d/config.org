@@ -306,7 +306,15 @@ For visual-line mode, a custom function has to be defined.
 #+end_src
 **** Yank
 #+begin_src emacs-lisp
-  (general-mmap "Y" 'evil-yank-line)
+  (general-define-key
+   :states '(motion normal)
+   "Y" 'evil-yank-line)
+#+end_src
+**** Auto tangle
+#+begin_src emacs-lisp
+  (use-package org-auto-tangle
+    :defer t
+    :hook (org-src-mode . org-auto-tangle-mode))
 #+end_src
 ** =helm=
 *** Initialize =helm=, use it as much as possible, and use it for =M-x= by default.
@@ -692,6 +700,13 @@ Use =org-indent-mode= for better list-like behavior, and nice indenting.
     :diminish
     )
 #+end_src
+**** Editing source
+#+begin_src emacs-lisp
+  ;; (add-hook 'org-mode-hook (lambda() 
+    ;; (make-local-variable 'evil-insert-state-entry-hook) ;; making this hook act only locally in the buffer where org-mode-hook has been called
+    ;; (add-hook 'evil-insert-state-entry-hook #'org-edit-src-code)
+    ;; )) 
+#+end_src
 *** Export settings
 **** Disable the HTML export postamble.
  #+BEGIN_SRC emacs-lisp
@@ -996,20 +1011,25 @@ Highlight characters that go past 80 columns.
  #+BEGIN_SRC emacs-lisp
    (setq scroll-preserve-screen-position t)
  #+END_SRC
-** Bind =<leader> c <space>= to toggle commenting in visual mode.
+** Comments
  #+BEGIN_SRC emacs-lisp
+   (use-package evil-nerd-commenter)
    (my-leader-def
-     :modes 'visual
-     "SPC" 'comment-or-uncomment-region
-     :modes 'normal
-     "SPC" 'normal-mode-toggle-comment
+     :states '(visual normal)
+     :keymaps 'override
+     "SPC" 'evilnc-comment-or-uncomment-lines
      )
+   ;; (my-leader-def
+   ;;   :states 'normal
+   ;;   :keymaps 'override
+   ;;   "SPC" 'comment-line
+   ;;   )
 
 
-   (defun normal-mode-toggle-comment ()
-     "Toggles the comment state of a single line in normal mode."
-     (interactive)
-     (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
+   ;; (defun normal-mode-toggle-comment ()
+   ;;   "Toggles the comment state of a single line in normal mode."
+   ;;   (interactive)
+   ;;   (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
 
    ;; (define-key evil-normal-state-map (kbd (concat leader "c SPC"))
    ;;   'normal-mode-toggle-comment)
@@ -1029,8 +1049,9 @@ Highlight characters that go past 80 columns.
 #+end_src
 *** =evil-smartparens=
 #+begin_src emacs-lisp
-  (use-package evil-smartparens)
-  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+  ;; (use-package evil-smartparens)
+
+  ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
 #+end_src
 ** Expand region
 #+begin_src emacs-lisp
