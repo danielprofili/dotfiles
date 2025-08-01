@@ -324,7 +324,7 @@ For visual-line mode, a custom function has to be defined.
                 ;; :bind (("M-x" . helm-M-x))
                 :delight helm-mode
                 ;:init (helm-mode 1)
-                :config (helm-autoresize-mode t)
+                ;; :config (helm-autoresize-mode t)
                 )
 
    (general-nmap "C-p" 'helm-mini)
