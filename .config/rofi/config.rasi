@@ -1,5 +1,5 @@
 configuration {
-    modi: "window,drun,filebrowser";
+    modi: "ssh,window,drun,filebrowser";
 /*	width: 50;*/
     lines: 30;
     columns: 2;
@@ -11,9 +11,9 @@ configuration {
 /*	xoffset: 0;*/
 /*	fixed-num-lines: true;*/
     show-icons: true;
-/*	terminal: "rofi-sensible-terminal";*/
-/*	ssh-client: "ssh";*/
-/*	ssh-command: "{terminal} -e {ssh-client} {host} [-p {port}]";*/
+	terminal: "alacritty";
+/*	ssh-client: "/usr/local/krb5/bin/ssh";*/
+	ssh-command: "{terminal} -e {ssh-client} -L 9898:localhost:9898 {host} [-p {port}]";
 /*	run-command: "{cmd}";*/
 /*	run-list-command: "";*/
 /*	run-shell-command: "{terminal} -e {cmd}";*/

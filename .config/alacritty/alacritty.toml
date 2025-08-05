@@ -17,7 +17,7 @@ family = "Aporetic Sans Mono"
 style = "Regular"
 
 [window]
-opacity = 0.5
+opacity = 0.8
 # blur = true
 dynamic_title = true
 

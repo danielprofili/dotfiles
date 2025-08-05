@@ -885,7 +885,7 @@ Use =org-indent-mode= for better list-like behavior, and nice indenting.
 #+BEGIN_SRC emacs-lisp
   (use-package modus-themes)
   (load-theme 'modus-vivendi-tinted t)
-  (setq modus-themes-variable-pitch-ui t)
+  (setq modus-themes-variable-pitch-ui nil)
 #+END_SRC
 ** Font
 Use my preferred font if possible. Otherwise use basic monospace.
