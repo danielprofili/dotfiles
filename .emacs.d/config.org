@@ -317,17 +317,20 @@ For visual-line mode, a custom function has to be defined.
     :hook (org-src-mode . org-auto-tangle-mode))
 #+end_src
 ** =helm=
-*** Initialize =helm=, use it as much as possible, and use it for =M-x= by default.
+*** Initialize =helm= 
  #+BEGIN_SRC emacs-lisp
-   (use-package helm
-                :ensure t
-                ;; :bind (("M-x" . helm-M-x))
-                :delight helm-mode
-                ;:init (helm-mode 1)
-                ;; :config (helm-autoresize-mode t)
-                )
+     (use-package helm
+                  :ensure t
+                  ;; :bind (("M-x" . helm-M-x))
+                  :delight helm-mode
+                  ;:init (helm-mode 1)
+                  ;; :config (helm-autoresize-mode t)
+                  )
 
-   (general-nmap "C-p" 'helm-mini)
+   (general-define-key
+    :states '(motion normal visual insert)
+    ;; :keymaps 'override
+      "C-x b" 'helm-mini)
  #+END_SRC
 *** vim-like bindings in helm
 #+BEGIN_SRC emacs-lisp
@@ -570,18 +573,28 @@ Out of order searching in minibuffer
     :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
     :init (all-the-icons-completion-mode))
 #+end_src
-** =ivy=, =swiper=
+** =ivy=, =swiper, counsel=
 #+begin_src emacs-lisp
   (use-package ivy
     :ensure t
     :config
     (setq ivy-use-virtual-buffers t
           ivy-count-format "%d/%d "))
-  (use-package swiper)
+  (use-package swiper
+    :ensure t)
+  (use-package counsel
+    :ensure t)
+  (defun my-swiper-last ()
+    "Run swiper with the last input."
+    (interactive)
+    (call-interactively 'counsel-grep-or-swiper)
+    (call-interactively 'swiper-C-s))
   (general-define-key
    :states '(motion normal)
    "C-/" 'counsel-grep-or-swiper
-   "C-*" 'swiper-thing-at-point)
+   "C-*" 'swiper-thing-at-point
+   "C-N" 'my-swiper-last
+   )
 #+end_src
 ** =dired-subtree=
 #+begin_src emacs-lisp
@@ -970,7 +983,7 @@ Highlight characters that go past 80 columns.
   (setq highlight-indent-guides-responsive 'stack)
   (setq highlight-indent-guides-delay 0)
   ; Use it in programming and org-mode
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   ;; (add-hook 'org-mode-hook 'highlight-indent-guides-mode)
 #+END_SRC
 ** Show matching parenthesis pairs.

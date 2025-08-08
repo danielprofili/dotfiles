@@ -23,7 +23,7 @@
  '(helm-follow-mode-persistent t)
  '(helm-mini-default-sources '(helm-source-buffers-list helm-source-buffer-not-found))
  '(helm-minibuffer-history-key "M-p")
- '(helm-source-names-using-follow '("switch-to-buffer" "Buffers"))
+ '(helm-source-names-using-follow '("Buffers" "switch-to-buffer"))
  '(helm-type-buffer-actions
    '(("Switch to buffer(s)" . helm-buffer-switch-buffers)
      ("Switch to buffer(s) other window `C-c o'" . helm-buffer-switch-buffers-other-window)
@@ -54,7 +54,7 @@
  '(org-src-ask-before-returning-to-edit-buffer nil)
  '(org-startup-folded t)
  '(package-selected-packages
-   '(multi-vterm vterm rasi-mode evil-nerd-commenter org-auto-tangle org-present rainbow-mode org-variable-pitch backward-forward-mode ivy-hydra ivy-explorer dired-preview standard-themes spacious-padding org-modern dired dired-subtree evil-collection nerd-icons pdf-tools helm-swoop consult-dir ivy-avy counsel amx general all-the-icons-completion all-the-icons ace-window embark-consult orderless consult vertico marginalia embark ox-reveal org-tree-slide epresent expand-region evil-smartparens smartparens smex w3m gruvbox-theme theme-magic xresources-theme markdown-mode mood-line modus-themes eaf-browser yasnippet-snippets writeroom-mode which-key telephone-line projectile ox-twbs org-ref org-evil magit ivy highlight-indent-guides helm focus evil-surround evil-better-visual-line disable-mouse dired-git-info delight company benchmark-init backward-forward auctex ample-theme))
+   '(multi-vterm vterm rasi-mode evil-nerd-commenter org-auto-tangle org-present rainbow-mode org-variable-pitch backward-forward-mode ivy-hydra ivy-explorer dired-preview spacious-padding org-modern dired dired-subtree evil-collection nerd-icons pdf-tools helm-swoop consult-dir ivy-avy counsel amx general all-the-icons-completion all-the-icons ace-window embark-consult orderless consult vertico marginalia embark ox-reveal org-tree-slide epresent expand-region evil-smartparens smartparens smex w3m gruvbox-theme theme-magic xresources-theme markdown-mode mood-line modus-themes eaf-browser yasnippet-snippets writeroom-mode which-key telephone-line projectile ox-twbs org-ref org-evil magit ivy highlight-indent-guides helm focus evil-surround evil-better-visual-line disable-mouse dired-git-info delight company benchmark-init backward-forward auctex ample-theme))
  '(python-indent-guess-indent-offset-verbose nil)
  '(use-short-answers t))
 (custom-set-faces
