@@ -144,5 +144,5 @@ configuration {
 /*	me-accept-custom: "Control+MouseDPrimary";*/
 /*theme: "~/.cache/wal/colors-rofi-dark.rasi";*/
 }
-@import "~/.config/rofi/sidebar-modified.rasi"
+/*@import "~/.config/rofi/sidebar-modified.rasi"*/
 /* @import "/usr/share/rofi/themes/sidebar.rasi" */

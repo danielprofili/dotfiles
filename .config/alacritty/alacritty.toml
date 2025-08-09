@@ -17,12 +17,12 @@ family = "Aporetic Sans Mono"
 style = "Regular"
 
 [window]
-opacity = 0.5
+opacity = 0.8
 
 [keyboard]
 bindings = [
-{key = "U", mods="Control", action="ScrollHalfPageUp"},
-{key = "D", mods="Control", action="ScrollHalfPageDown"},
+# {key = "U", mods="Control", action="ScrollHalfPageUp"},
+# {key = "D", mods="Control", action="ScrollHalfPageDown"},
 {key = "K", mods="Control", action="ScrollLineUp"},
 {key = "J", mods="Control", action="ScrollLineDown"},
 ]

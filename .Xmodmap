@@ -7,13 +7,10 @@
 !mod4        Super_L (0x85),  Super_R (0x86),  Super_L (0xce)
 !mod5        ISO_Level3_Shift (0x5c),  Mode_switch (0xcb)
 
-clear mod1
-clear mod4
 clear lock
-keycode 64 = Super_L Alt_L
+keycode 64 = Alt_L Meta_L Alt_L Meta_L
 keycode 66 = Escape
-add mod4 = Alt_L Super_L Super_R
-add mod1 = Alt_R
 keycode 127 = XF86AudioPlay
 keycode 107 = XF86AudioPrev 
-keycode 78 = XF86AudioNext 
+keycode 78 = XF86AudioNext
+

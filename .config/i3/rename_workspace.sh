@@ -6,4 +6,5 @@ NEWNAME="`zenity --entry --text 'Rename workspace to: '`"
 if [[ ! "${NEWNAME}" =~ ^[0-9]+: && -n $NEWNAME ]] ; then
         NEWNAME="${WSNUMBER}:${NEWNAME}"
 fi
+echo $NEWNAME
 i3-msg "rename workspace to \"${NEWNAME}\""

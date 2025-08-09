@@ -157,7 +157,7 @@ parse_git_branch() {
          git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 
-export PS1="\[$(tput bold)\]\[\033[38;5;3m\][\[$(tput sgr0)\]\[\033[38;5;6m\]\T\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;3m\]]\[$(tput sgr0)\] \[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;1m\]\u\[$(tput sgr0)\]\[\033[38;5;4m\]@\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;2m\]\h\[$(tput sgr0)\] \[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;3m\][\[$(tput sgr0)\]\[\033[38;5;6m\]\w\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;3m\]]\[$(tput sgr0)\]\[\033[38;5;6m\]\$(parse_git_branch)\n\[$(tput sgr0)\]\[\033[38;5;1m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
+export PS1="\[$(tput bold)\]\[\033[38;5;3m\][\[$(tput sgr0)\]\[\033[38;5;6m\]\t\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;3m\]]\[$(tput sgr0)\] \[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;1m\]\u\[$(tput sgr0)\]\[\033[38;5;4m\]@\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;2m\]\h\[$(tput sgr0)\] \[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;3m\][\[$(tput sgr0)\]\[\033[38;5;6m\]\w\[$(tput sgr0)\]\[$(tput bold)\]\[\033[38;5;3m\]]\[$(tput sgr0)\]\[\033[38;5;6m\]\$(parse_git_branch)\n\[$(tput sgr0)\]\[\033[38;5;1m\]\\$\[$(tput sgr0)\] \[$(tput sgr0)\]"
 
 
 # Use vim as editor for most stuff
@@ -166,7 +166,8 @@ export EDITOR=vim;
 
 #alias emacsd="emacs --daemon && emacsclient -c"
 #alias emacs="emacsclient -c"
-alias e="sw ~/bin/emacs.sh"
+#alias e="sw ~/bin/emacs.sh"
+alias e="emacsclient -nw"
 
 # autojump
 [[ -s /etc/profile.d/autojump.sh ]] && source /etc/profile.d/autojump.sh
@@ -179,3 +180,4 @@ j() {
 }
 
 alias dfs="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
+eval "$(lua ~/bin/z.lua --init bash enhanced once fzf)"
