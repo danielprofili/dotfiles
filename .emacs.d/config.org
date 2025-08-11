@@ -1,0 +1,1086 @@
+#+Title: Configuration
+#+AUTHOR: Daniel Profili
+
+ #+begin_src emacs-lisp
+   ;; ▄▄▄▄▄▄▄ ▄▄▄▄▄▄▄ ▄▄    ▄ ▄▄▄▄▄▄▄ ▄▄▄ ▄▄▄▄▄▄▄      ▄▄▄▄▄▄▄ ▄▄▄▄▄▄   ▄▄▄▄▄▄▄ 
+   ;;█       █       █  █  █ █       █   █       █    █       █   ▄  █ █       █
+   ;;█       █   ▄   █   █▄█ █    ▄▄▄█   █   ▄▄▄▄█    █   ▄   █  █ █ █ █   ▄▄▄▄█
+   ;;█     ▄▄█  █ █  █       █   █▄▄▄█   █  █  ▄▄     █  █ █  █   █▄▄█▄█  █  ▄▄ 
+   ;;█    █  █  █▄█  █  ▄    █    ▄▄▄█   █  █ █  █▄▄▄ █  █▄█  █    ▄▄  █  █ █  █
+   ;;█    █▄▄█       █ █ █   █   █   █   █  █▄▄█ █   ██       █   █  █ █  █▄▄█ █
+   ;;█▄▄▄▄▄▄▄█▄▄▄▄▄▄▄█▄█  █▄▄█▄▄▄█   █▄▄▄█▄▄▄▄▄▄▄█▄▄▄██▄▄▄▄▄▄▄█▄▄▄█  █▄█▄▄▄▄▄▄▄█
+ #+end_src
+
+* Package Setup
+** Add =org= and =melpa= to package archives.
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+#+END_SRC
+** Don't enable packages when emacs starts; do it lazily.
+#+BEGIN_SRC emacs-lisp
+(setq package-enable-at-startup nil)
+#+END_SRC
+** Always ensure and demand packages
+#+begin_src emacs-lisp
+  (setq use-package-always-ensure t)
+#+end_src
+** Initialize packages and install =use-package= if necessary.
+#+BEGIN_SRC emacs-lisp
+  (package-initialize)
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+
+  (eval-when-compile
+    (require 'use-package))
+
+  ;; (setq use-package-verbose t)
+
+  ; use-package installs packages automatically if they are not installed
+  (setq use-package-always-ensure t)
+#+END_SRC
+* General Emacs settings
+** Initial setup
+*** General Emacs settings.
+#+begin_src emacs-lisp
+  (use-package emacs
+    :init
+    (setq minibuffer-prompt-properties
+          '(read-only t cursor-intangible t face minibuffer-prompt))
+    (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+    ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
+    ;; Vertico commands are hidden in normal buffers.
+    (setq read-extended-command-predicate
+          #'command-completion-default-include-p)
+
+    ;; Some general options
+    (setq enable-recursive-minibuffers t
+          require-final-newline t
+          load-prefer-newer t
+          completion-ignore-case t
+          inhibit-startup-screen t
+          ring-bell-function 'ignore
+          help-window-select t
+
+          )
+
+    ;; General modes
+    (global-auto-revert-mode 1)
+    (add-hook 'dired-mode-hook 'auto-revert-mode)
+    (display-time-mode t)
+    (save-place-mode 1)
+    (toggle-scroll-bar -1)
+    (scroll-bar-mode -1)
+    (tool-bar-mode -1)
+    (menu-bar-mode -1)
+    )
+#+end_src
+*** =general.el= and some global keybindings
+#+begin_src emacs-lisp
+  (use-package general
+    :ensure t
+    :init 
+    (with-eval-after-load 'evil
+      (general-evil-setup))
+    (general-auto-unbind-keys)
+    :config
+    (general-override-mode)
+    (general-create-definer my-leader-def
+      :keymaps '(visual normal motion)
+      :prefix "\\")
+    )
+  (general-define-key
+   :keymaps 'global
+   ;;"<escape>" 'keyboard-escape-quit
+   "C-M-;" 'repeat-complex-command
+   "M-;" 'execute-extended-command
+   "C-f" 'avy-goto-char-timer
+   :states 'normal
+   "DEL" 'ace-window
+   )
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  ;; (keymap-unset evil-motion-state-map "<RET>" t)
+#+end_src
+** Start the emacs server, if it isn't already running.
+#+BEGIN_SRC emacs-lisp
+  (require 'server)
+  (unless (server-running-p)
+    (server-start))
+#+END_SRC
+** Save =custom= settings elsewhere.
+#+BEGIN_SRC emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+#+END_SRC
+** Use (visual) line numbers in all buffers by default.
+#+BEGIN_SRC emacs-lisp
+  ;; (setq-default display-line-numbers 'visual
+  ;; 	      display-line-numbers-widen t)
+  ;; (setq-default display-line-numbers nil
+  ;;               display-line-numbers-widen nil)
+  (add-hook 'prog-mode-hook (lambda () (setq-local display-line-numbers 'visual)))
+#+END_SRC
+** Set UTF-8 encoding.
+#+BEGIN_SRC emacs-lisp
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+#+END_SRC
+** Adjust garbage collection to stop org from slowing down.
+#+BEGIN_SRC emacs-lisp
+(setq gc-cons-threshold (* 511 1024 1024))
+(setq gc-cons-percentage 0.5)
+(run-with-idle-timer 5 t 'garbage-collect)
+(setq garbage-collection-messages nil)
+#+END_SRC
+** Set frame title.
+#+BEGIN_SRC emacs-lisp
+  (setq frame-title-format
+        '(buffer-name-name "%f"
+                           (dired-directory dired-directory "%b")))
+#+END_SRC
+** Disable backup files.
+#+BEGIN_SRC emacs-lisp
+(setq make-backup-files nil)
+(setq auto-save-default nil)
+#+END_SRC
+** Autofill mode, for hard line wrapping
+#+BEGIN_SRC emacs-lisp
+  (require 'newcomment)
+  (setq comment-auto-fill-only-comments 1)
+  (setq-default auto-fill-function 'do-auto-fill)
+#+END_SRC
+** Transparency
+#+begin_src emacs-lisp
+  ;; (custom-set-faces '(default: background nil))
+  (set-frame-parameter nil 'alpha-background 90) 
+  ;; (set-frame-parameter nil 'alpha 100)
+  (add-to-list 'default-frame-alist '(alpha-background . 90))
+#+end_src
+* Packages
+** =diminish=
+*** Hide some useless minor modes from the modeline.
+#+BEGIN_SRC emacs-lisp
+  (use-package delight)
+#+END_SRC
+** =evil-mode=
+*** General
+**** Set some convenience settings (like using =C-u= to scroll up, auto-indent, etc).
+#+BEGIN_SRC emacs-lisp
+(setq evil-want-C-u-scroll t)
+(setq evil-auto-indent t)
+(setq evil-backspace-join-lines t)
+;(evil-global-set-key 'normal (kbd "RET") 'newline-and-indent)
+#+END_SRC
+**** Initialize =evil=.
+#+BEGIN_SRC emacs-lisp
+  (setq evil-want-keybinding nil
+        evil-want-integration t)
+  (use-package evil)
+  (use-package evil-collection
+    :after evil
+    :ensure t
+    :config (evil-collection-init))
+#+END_SRC
+**** Start =evil-mode=!
+#+BEGIN_SRC emacs-lisp
+(evil-mode t)
+#+END_SRC
+**** Make everything normal/motion state.
+#+BEGIN_SRC emacs-lisp
+  (setq evil-emacs-state-modes nil)
+  (setq evil-insert-state-modes '(eshell-mode))
+#+END_SRC
+**** =evil-better-visual-line=
+This is a package designed to improve visual-line-mode slightly, by adding visual line keymaps and other changes.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-better-visual-line
+    :ensure t
+    :config
+    (evil-better-visual-line-on))
+#+END_SRC
+*** Leader key
+**** Create a new keymap for the leader key (=\=). 
+ #+BEGIN_SRC emacs-lisp
+ #+END_SRC
+*** Keybindings
+**** Compile shortcuts
+***** Shortcuts for =compile= and =recompile=
+#+BEGIN_SRC emacs-lisp
+  (my-leader-def
+    :keymaps 'normal
+    "ee" 'compile
+    "re" 'recompile)
+#+END_SRC
+
+**** Define shortcut for editing configuration.
+ #+BEGIN_SRC emacs-lisp
+   (my-leader-def
+     :keymaps 'normal
+     "ev" '(lambda () (interactive) (find-file-other-window "~/.emacs.d/config.org"))
+     "sv" '(lambda () (interactive) (load user-init-file)))
+ #+END_SRC
+**** Bind enter to =newline-and-indent=.
+**** Move up/down by visual lines in normal, visual, and visual line modes.
+#+BEGIN_SRC emacs-lisp
+  (general-mmap
+   "j" 'evil-next-visual-line
+   "k" 'evil-previous-visual-line)
+  (general-vmap 
+   "j" 'evil-next-visual-line
+  "k" 'evil-previous-visual-line)
+#+END_SRC
+
+For visual-line mode, a custom function has to be defined.
+#+BEGIN_SRC emacs-lisp
+  (evil-define-motion myevil-next-visual-line (count)
+    "Move the cursor COUNT screen lines down, or 1."
+    :type exclusive
+    (let ((line-move-visual t))
+      (evil-line-move (or count 1))))
+
+  ;; (define-key evil-visual-state-map "j" 'myevil-next-visual-line)
+  ;; (define-key evil-visual-state-map "k" '(lambda() (interactive) (myevil-next-visual-line -1)))
+#+END_SRC
+**** Shift-tab in insert mode to the next bracket.
+#+BEGIN_SRC emacs-lisp
+  (defvar xah-brackets nil "string of left/right brackets pairs.")
+  (setq xah-brackets "()[]{}<>（）［］｛｝⦅⦆〚〛⦃⦄“”‘’‹›«»「」〈〉《》【】〔〕⦗⦘『』〖〗〘〙｢｣⟦⟧⟨⟩⟪⟫⟮⟯⟬⟭⌈⌉⌊⌋⦇⦈⦉⦊❛❜❝❞❨❩❪❫❴❵❬❭❮❯❰❱❲❳〈〉⦑⦒⧼⧽﹙﹚﹛﹜﹝﹞⁽⁾₍₎⦋⦌⦍⦎⦏⦐⁅⁆⸢⸣⸤⸥⟅⟆⦓⦔⦕⦖⸦⸧⸨⸩｟｠⧘⧙⧚⧛⸜⸝⸌⸍⸂⸃⸄⸅⸉⸊᚛᚜༺༻༼༽⏜⏝⎴⎵⏞⏟⏠⏡﹁﹂﹃﹄︹︺︻︼︗︘︿﹀︽︾﹇﹈︷︸")
+
+  (defvar xah-left-brackets '("(" "{" "[" "<" "〔" "【" "〖" "〈" "《" "「" "『" "“" "‘" "‹" "«" )
+    "List of left bracket chars.")
+  (progn
+  ;; make xah-left-brackets based on xah-brackets
+    (setq xah-left-brackets '())
+    (dotimes ($x (- (length xah-brackets) 1))
+      (when (= (% $x 2) 0)
+        (push (char-to-string (elt xah-brackets $x))
+              xah-left-brackets)))
+    (setq xah-left-brackets (reverse xah-left-brackets)))
+
+  (defvar xah-right-brackets '(")" "]" "}" ">" "〕" "】" "〗" "〉" "》" "」" "』" "”" "’" "›" "»")
+    "list of right bracket chars.")
+  (progn
+    (setq xah-right-brackets '())
+    (dotimes ($x (- (length xah-brackets) 1))
+      (when (= (% $x 2) 1)
+        (push (char-to-string (elt xah-brackets $x))
+              xah-right-brackets)))
+    (setq xah-right-brackets (reverse xah-right-brackets)))
+  (defun xah-backward-left-bracket ()
+    "Move cursor to the previous occurrence of left bracket.
+  The list of brackets to jump to is defined by `xah-left-brackets'.
+  URL `http://ergoemacs.org/emacs/emacs_navigating_keys_for_brackets.html'
+  Version 2015-10-01"
+    (interactive)
+    (re-search-backward (regexp-opt xah-left-brackets) nil t))
+
+  (defun xah-forward-right-bracket ()
+    "Move cursor to the next occurrence of right bracket.
+  The list of brackets to jump to is defined by `xah-right-brackets'.
+  URL `http://ergoemacs.org/emacs/emacs_navigating_keys_for_brackets.html'
+  Version 2015-10-01"
+    (interactive)
+    (re-search-forward (regexp-opt xah-right-brackets) nil t))
+#+END_SRC
+**** Semicolon to colon
+#+BEGIN_SRC emacs-lisp
+  (general-nmap ";" 'evil-ex)
+#+END_SRC
+**** =C-i= remapping
+#+begin_src emacs-lisp
+  (general-mmap "C-i" 'evil-jump-forward)
+#+end_src
+**** Scroll up and down easier
+#+begin_src emacs-lisp
+  (general-define-key 
+   :states '(normal motion)
+   "J" 'evil-scroll-down
+   "K" 'evil-scroll-up
+   )
+#+end_src
+**** Yank
+#+begin_src emacs-lisp
+  (general-define-key
+   :states '(motion normal)
+   "Y" 'evil-yank-line)
+#+end_src
+**** Auto tangle
+#+begin_src emacs-lisp
+  (use-package org-auto-tangle
+    :defer t
+    :hook (org-src-mode . org-auto-tangle-mode))
+#+end_src
+** =helm=
+*** Initialize =helm= 
+ #+BEGIN_SRC emacs-lisp
+     (use-package helm
+                  :ensure t
+                  ;; :bind (("M-x" . helm-M-x))
+                  :delight helm-mode
+                  ;:init (helm-mode 1)
+                  ;; :config (helm-autoresize-mode t)
+                  )
+
+   (general-define-key
+    :states '(motion normal visual insert)
+    ;; :keymaps 'override
+      "C-x b" 'helm-mini)
+ #+END_SRC
+*** vim-like bindings in helm
+#+BEGIN_SRC emacs-lisp
+  (use-package hydra)
+  (defhydra helm-like-unite (:hint nil
+                             :color pink)
+    "
+  Nav ^^^^^^^^^        Mark ^^          Other ^^       Quit
+  ^^^^^^^^^^------------^^----------------^^----------------------
+  _K_ ^ ^ _k_ ^ ^     _m_ark           _v_iew         _i_: cancel
+  ^↕^ _h_ ^✜^ _l_     _t_oggle mark    _H_elp         _o_: quit
+  _J_ ^ ^ _j_ ^ ^     _U_nmark all     _d_elete
+  ^^^^^^^^^^                           _f_ollow: %(helm-attr 'follow)
+  "
+    ;; arrows
+    ("h" helm-beginning-of-buffer)
+    ("j" helm-next-line)
+    ("k" helm-previous-line)
+    ("l" helm-end-of-buffer)
+    ;; beginning/end
+    ("g" helm-beginning-of-buffer)
+    ("G" helm-end-of-buffer)
+    ;; scroll
+    ("K" helm-scroll-other-window-down)
+    ("J" helm-scroll-other-window)
+    ;; mark
+    ("m" helm-toggle-visible-mark)
+    ("t" helm-toggle-all-marks)
+    ("U" helm-unmark-all)
+    ;; exit
+    ("<escape>" keyboard-escape-quit "" :exit t)
+    ("o" keyboard-escape-quit :exit t)
+    ("i" nil)
+    ;; sources
+    ("}" helm-next-source)
+    ("{" helm-previous-source)
+    ;; rest
+    ("H" helm-help)
+    ("v" helm-execute-persistent-action)
+    ("d" helm-persistent-delete-marked)
+    ("f" helm-follow-mode))
+#+END_SRC
+** =company=
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :diminish company-mode)
+  (add-hook 'after-init-hook 'global-company-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (general-define-key
+   :keymaps 'company-active-map
+   "C-j" 'company-select-next
+   "C-k" 'company-select-previous
+   )
+#+END_SRC
+** =avy=
+=avy= is a package for navigating the screen by typing fragments of words.
+#+BEGIN_SRC emacs-lisp
+  (use-package avy)
+#+END_SRC
+
+Use =F= to type characters and show shortcuts to jump to all visible on screen (like in cVim).
+#+BEGIN_SRC emacs-lisp
+  (general-nmap "F" 'avy-goto-char-timer)
+#+END_SRC
+
+Use =<leader>o= to do the same, but for org headings.
+#+BEGIN_SRC emacs-lisp
+  (my-leader-def :keymaps 'org-mode-map
+    "o" 'avy-org-goto-heading-timer
+    )
+#+END_SRC
+** =evil-surround=
+#+BEGIN_SRC emacs-lisp
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+#+END_SRC
+** =yasnippet=
+*** Install base =yasnippet=.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet)
+  (yas-global-mode 1)
+#+END_SRC
+*** Install snippets.
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet-snippets)
+#+END_SRC
+*** Set local snippet directory.
+#+BEGIN_SRC emacs-lisp
+  (setq yas-snippet-dirs
+        '("~/.emacs.d/snippets"))
+#+END_SRC
+** =disable-mouse=
+*** Disable the mouse in all buffers.
+#+BEGIN_SRC emacs-lisp
+  (use-package disable-mouse)
+  (mapc #'disable-mouse-in-keymap
+        (list evil-motion-state-map
+              evil-normal-state-map
+              evil-visual-state-map
+              evil-insert-state-map))
+#+END_SRC
+** =benchmark-init=
+#+BEGIN_SRC emacs-lisp
+(use-package benchmark-init
+  :ensure t
+  :config
+  ;; To disable collection of benchmark data after init is done.
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
+#+END_SRC
+** =AUCTeX=
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package tex
+  ;;   :ensure auctex)
+  (use-package auctex
+    :defer t
+    :ensure t)
+#+END_SRC
+** =projectile=
+#+begin_src emacs-lisp
+  (use-package projectile
+    :init (setq projectile-project-search-path '("~/projects/"))
+    :ensure t
+    :config (projectile-mode t))
+#+end_src
+** =uniquify=
+#+begin_src emacs-lisp
+  (require 'uniquify)
+  (setq uniquify-buffer-name-style 'forward)
+#+end_src
+** =which-key=
+#+begin_src emacs-lisp
+  (use-package which-key
+  :config (which-key-mode))
+#+end_src
+** =eaf= (emacs application framework)
+#+begin_src emacs-lisp
+  ;; (use-package eaf
+  ;;   :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
+  ;;   :custom
+  ;;   (eaf-browser-continue-where-left-off t)
+  ;;   (eaf-browser-enable-adblocker t)
+  ;;   (browse-url-browser-function 'eaf-open-browser))
+  ;; (require 
+  ;; '
+  ;;eaf-browser)
+#+end_src
+** =marginalia=
+#+begin_src emacs-lisp
+  (use-package marginalia
+    :bind (:map minibuffer-local-map
+                ("M-A" . marginalia-cycle))
+    :init (marginalia-mode))
+#+end_src
+** =vertico=
+Kind of like helm
+#+begin_src emacs-lisp
+  (use-package vertico
+    :init (vertico-mode)
+    :config
+    (file-name-shadow-mode 1)
+    (add-hook 'rfn-eshadow-update-overlay-hook #'vertico-directory-tidy)
+    )
+  (use-package savehist
+    :init (savehist-mode))
+#+end_src
+** =orderless=
+Out of order searching in minibuffer
+#+begin_src emacs-lisp
+  (use-package orderless
+    :ensure t
+    :demand t
+    :config
+    (setq completion-styles '(basic partial-completion substring initials flex orderless))
+    (setq orderless-matching-styles '(orderless-prefixes orderless-regexp))
+    )
+
+#+end_src
+** =consult=
+#+begin_src emacs-lisp
+     (use-package consult
+       :ensure t)
+    ;; (define-key evil-normal-state-map (kbd "C-p") 'consult-buffer)
+
+  ;; (general-define-key
+     ;; :states '(motion normal)
+     ;; "C-/" 'consult-line)
+#+end_src
+** =embark=
+#+begin_src emacs-lisp
+  (use-package embark
+    :ensure t
+    :bind (
+           :map minibuffer-local-map
+           ("C-c C-c" . embark-collect)
+           ("C-c C-e" . embark-export)))
+  (use-package embark-consult
+    :ensure t)
+
+  (general-define-key
+   :states '(motion normal insert)
+   "C-." 'embark-act)
+
+  ;; don't confirm
+  (setf (alist-get 'kill-buffer embark-pre-action-hooks) ())
+
+  ;; don't embark--restart
+  (setf (alist-get 'kill-buffer embark-post-action-hooks) ())
+
+  ;; don't quit
+  (setq embark-quit-after-action '((kill-buffer . nil) (t . t)))
+
+  ;; bind C-k to embark kill-buffer
+  ;; (defvar my-consult-buffer-map
+  ;;   (let ((map (make-sparse-keymap)))
+  ;;     (keymap-set map "C-k" "C-. k")
+  ;;   map))
+  ;; (consult-customize consult-buffer :keymap my-consult-buffer-map)
+#+end_src
+
+** =ace-window=
+#+begin_src emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :bind (:map evil-motion-state-map("C-w C-w" . ace-window))
+    :config
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+    (setq aw-scope 'frame)
+    )
+#+end_src
+** Icons
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    :if (display-graphic-p))
+  (use-package all-the-icons-completion
+    :after (marginalia all-the-icons)
+    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
+    :init (all-the-icons-completion-mode))
+#+end_src
+** =ivy=, =swiper, counsel=
+#+begin_src emacs-lisp
+  (use-package ivy
+    :ensure t
+    :config
+    (setq ivy-use-virtual-buffers t
+          ivy-count-format "%d/%d "))
+  (use-package swiper
+    :ensure t)
+  (use-package counsel
+    :ensure t)
+  (defun my-swiper-last ()
+    "Run swiper with the last input."
+    (interactive)
+    (call-interactively 'counsel-grep-or-swiper)
+    (call-interactively 'swiper-C-s))
+  (general-define-key
+   :states '(motion normal)
+   "C-/" 'counsel-grep-or-swiper
+   "C-*" 'swiper-thing-at-point
+   "C-N" 'my-swiper-last
+   )
+#+end_src
+** =dired-subtree=
+#+begin_src emacs-lisp
+  (use-package dired-subtree
+    :ensure t
+    :after dired
+    :bind (:map dired-mode-map
+               ("<tab>" . dired-subtree-toggle) 
+               ("<backtab>" . dired-subtree-cycle)
+   ) 
+  )
+#+end_src
+** =magit=
+#+begin_src emacs-lisp
+  (use-package magit
+    :ensure t
+    ;; :config (add-to-list 'evil-motion-state-modes 'magit-mode)
+    )
+#+end_src
+** =amx=
+#+begin_src emacs-lisp
+  (use-package amx)
+#+end_src
+** =backward-forward=
+#+begin_src emacs-lisp
+  (use-package backward-forward)
+#+end_src
+* Major modes
+** =org-mode=
+*** Display settings
+**** Hide emphasis markers (/, =, *, etc).
+#+BEGIN_SRC emacs-lisp
+ (setq org-hide-emphasis-markers t)
+#+END_SRC
+**** Disable line numbers in =org-mode=.
+ #+BEGIN_SRC emacs-lisp
+ (add-hook 'org-mode-hook (lambda () (setq-local display-line-numbers nil)))
+ #+END_SRC
+**** Use an arrow instead of the ellipsis.
+ #+BEGIN_SRC emacs-lisp
+   (setq org-ellipsis "↴")
+ #+END_SRC
+**** Don't underline the ellipsis.
+#+BEGIN_SRC emacs-lisp
+  (custom-set-faces '(org-ellipsis ((t (:underline nil)))))
+#+END_SRC
+**** Make tab act correctly in source code blocks.
+ #+BEGIN_SRC emacs-lisp
+   (setq org-src-tab-acts-natively t)
+ #+END_SRC
+**** Use syntax highlighting in source blocks.
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t)
+#+END_SRC
+**** Open native source code buffer in the current window.
+ #+BEGIN_SRC emacs-lisp
+   (setq org-src-window-setup 'current-window)
+ #+END_SRC
+**** Change the font and size depending on heading level.
+Use a sans-serif font to display org headings, and decrease the size depending on the heading level.
+ #+BEGIN_SRC emacs-lisp
+   ;; (let* ((base-font-color     (face-foreground 'default nil 'default))
+   ;;        (headline           `(:inherit default :weight bold)))
+   ;;   (custom-theme-set-faces 'user
+   ;;     		      `(org-level-8 ((t (,@headline))))
+   ;;     		      `(org-level-7 ((t (,@headline))))
+   ;;     		      `(org-level-6 ((t (,@headline))))
+   ;;     		      `(org-level-5 ((t (,@headline))))
+   ;;     		      `(org-level-4 ((t (,@headline :height 1.1
+   ;;     						    :foreground "goldenrod"))))
+   ;;     		      `(org-level-3 ((t (,@headline :height 1.25
+   ;;     						    :foreground "SeaGreen2"))))
+   ;;     		      `(org-level-2 ((t (,@headline :height 1.5
+   ;;     						    :foreground "DarkOrange"))))
+   ;;     		      `(org-level-1 ((t (,@headline :height 1.75
+   ;;     						    :foreground "DarkOrchid1"))))
+   ;;     		      `(org-document-title ((t (,@headline :height 1.5 :underline nil))))))
+ #+END_SRC
+**** Show timestamps when a TODO is marked as done.
+ #+BEGIN_SRC emacs-lisp
+   (setq org-log-done 'time)
+ #+END_SRC
+**** Indent mode
+Use =org-indent-mode= for better list-like behavior, and nice indenting.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook 'org-indent-mode)
+#+END_SRC
+**** =org-bullets=
+***** Use fancier org bullets, and hook it to =org-mode=.
+  #+BEGIN_SRC emacs-lisp
+    ;; (use-package org-bullets
+    ;;   :init
+    ;;   (add-hook 'org-mode-hook #'org-bullets-mode))
+  #+END_SRC
+***** Set the list of characters to use for bullets.
+ #+BEGIN_SRC emacs-lisp
+   ;; (setq org-bullets-bullet-list '("⇨" "→"))
+ #+END_SRC
+**** Highlight outlines of source blocks.
+#+BEGIN_SRC emacs-lisp
+  ;; (defface org-block-begin-line
+  ;;   '((t (:underline nil :foreground "#008ED1")))
+  ;;   "Face used for the line delimiting the beginning of source blocks.")
+  ;; ;; ;; (defface org-block-background
+  ;; ;; ;;   '((t (:background "#FFFFEA")))
+  ;; ;; ;;   "Face used for the source block background.")
+  ;; (defface org-block-end-line
+  ;;   '((t (:overline nil :foreground "#008ED1")))
+  ;;   "Face used for the line delimiting the end of source blocks.")
+#+END_SRC
+**** Indentation
+#+begin_src emacs-lisp
+  (setq org-startup-indented t)
+  (use-package org-indent
+    :ensure nil
+    :diminish
+    )
+#+end_src
+**** Editing source
+#+begin_src emacs-lisp
+  ;; (add-hook 'org-mode-hook (lambda() 
+    ;; (make-local-variable 'evil-insert-state-entry-hook) ;; making this hook act only locally in the buffer where org-mode-hook has been called
+    ;; (add-hook 'evil-insert-state-entry-hook #'org-edit-src-code)
+    ;; )) 
+#+end_src
+*** Export settings
+**** Disable the HTML export postamble.
+ #+BEGIN_SRC emacs-lisp
+ (setq org-html-postamble nil)
+ #+END_SRC
+**** Include Bootstrap export.
+ #+BEGIN_SRC emacs-lisp
+ (use-package ox-twbs)
+ #+END_SRC
+**** LaTeX Beamer export
+#+BEGIN_SRC emacs-lisp
+(unless (boundp 'org-export-latex-classes)
+  (setq org-export-latex-classes nil))
+(add-to-list 'org-export-latex-classes
+  ;; beamer class, for presentations
+  '("beamer"
+     "\\documentclass[11pt]{beamer}\n
+      \\mode<{{{beamermode}}}>\n
+      \\usetheme{{{{beamertheme}}}}\n
+      \\usecolortheme{{{{beamercolortheme}}}}\n
+      \\beamertemplateballitem\n
+      \\setbeameroption{show notes}
+      \\usepackage[utf8]{inputenc}\n
+      \\usepackage[T1]{fontenc}\n
+      \\usepackage{hyperref}\n
+      \\usepackage{color}
+      \\usepackage{listings}
+      \\lstset{numbers=none,language=[ISO]C++,tabsize=4,
+  frame=single,
+  basicstyle=\\small,
+  showspaces=false,showstringspaces=false,
+  showtabs=false,
+  keywordstyle=\\color{blue}\\bfseries,
+  commentstyle=\\color{red},
+  }\n
+      \\usepackage{verbatim}\n
+      \\institute{{{{beamerinstitute}}}}\n          
+       \\subject{{{{beamersubject}}}}\n"
+
+     ("\\section{%s}" . "\\section*{%s}")
+     
+     ("\\begin{frame}[fragile]\\frametitle{%s}"
+       "\\end{frame}"
+       "\\begin{frame}[fragile]\\frametitle{%s}"
+       "\\end{frame}")))
+#+END_SRC
+*** Keybindings
+#+BEGIN_SRC emacs-lisp
+  (general-nmap
+    :keymaps 'org-mode-map
+    "TAB" 'org-cycle
+    ">" 'org-shiftmetaright
+    "<" 'org-shiftmetaleft
+    "SPC" 'org-todo
+    "RET" 'evil-toggle-fold
+    "S-RET" 'org-meta-return
+    "C-j" 'org-metadown
+    "C-k" 'org-metaup
+    )
+#+END_SRC
+*** Capture templates
+#+BEGIN_SRC emacs-lisp
+  (setq dp/template-dir "~/.emacs.d/org-templates")
+  (setq org-capture-templates
+        '(("j" ; Hotkey
+           "Journal entry" ; Name
+           entry ; Type
+           (file+olp+datetree "~/.emacs.d/journal.org") ; Heading type and filename
+           (file "~/.emacs.d/org-templates/journal.org")) ; Template content
+          ))
+#+END_SRC
+*** =evil= integration
+[[https://github.com/GuiltyDolphin/org-evil][=org-evil=]] is a set of bindings for =org-mode= that make it more useable with =evil= keybindings.
+#+BEGIN_SRC emacs-lisp
+; (use-package org-evil)
+#+END_SRC
+*** Default PDF viewer
+#+BEGIN_SRC emacs-lisp
+  (eval-after-load "org"
+    '(progn
+       ;; .txt files aren't in the list initially, but in case that changes
+       ;; in a future version of org, use if to avoid errors
+       ;; (if (assoc "\\.txt\\'" org-file-apps)
+       ;;     (setcdr (assoc "\\.txt\\'" org-file-apps) "notepad.exe %s")
+       ;;   (add-to-list 'org-file-apps '("\\.txt\\'" . "notepad.exe %s") t))
+       ;; Change .pdf association directly within the alist
+       (setcdr (assoc "\\.pdf\\'" org-file-apps) "zathura %s")))
+#+END_SRC
+*** Use BibTeX
+#+BEGIN_SRC emacs-lisp
+  (setq org-latex-pdf-process
+        '("pdflatex -interaction nonstopmode -output-directory %o %f"
+          "bibtex %b"
+          "pdflatex -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -interaction nonstopmode -output-directory %o %f")
+)
+#+END_SRC
+*** Use =org-ref= for nice references
+#+BEGIN_SRC emacs-lisp
+  (use-package org-ref
+    :ensure t)
+#+END_SRC
+
+** =latex-mode=
+*** Use =LaTex-math-mode.=
+#+BEGIN_SRC emacs-lisp
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+#+END_SRC
+*** Set custom leader and some commands.
+#+BEGIN_SRC emacs-lisp
+  ;; (custom-set-variables
+  ;;  ;; custom-set-variables was added by Custom.
+  ;;  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;;  ;; Your init file should contain only one such instance.
+  ;;  ;; If there is more than one, they won't work right.
+  ;;  '(LaTeX-math-abbrev-prefix "`"))
+  ;; ;; (setq TeX-electric-sub-and-superscript nil)
+  ;; (
+   (setq TeX-electric-math nil)
+  ;; ;
+  ;(setq LaTeX-math-list '((kbd "<C-i>") "\^{-1}"))
+#+END_SRC
+*** Use =zathura= as the PDF viewer.
+#+BEGIN_SRC emacs-lisp
+  (setq TeX-view-program-selection '((output-pdf "Zathura"))
+        TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+        TeX-source-correlate-start-server t) ;; not sure if last line is neccessary
+
+  ;; to have the buffer refresh after compilation
+  (add-hook 'TeX-after-compilation-finished-functions
+            #'TeX-revert-document-buffer)
+#+END_SRC
+*** Add some extra environments so I don't have to type them so much
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook
+        (lambda ()
+          (LaTeX-add-environments "align")
+          (LaTeX-add-environments "align*")
+          (LaTeX-add-environments "parts")))
+#+END_SRC
+** Assembly
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'asm-mode-hook (lambda () (setq tab-stop-list (number-sequence 4 60 4))))
+#+END_SRC
+** C mode
+#+BEGIN_SRC emacs-lisp
+(setq c-basic-offset 4)
+#+END_SRC
+** Markdown
+#+BEGIN_SRC emacs-lisp
+(defun markdown-html (buffer)
+  (princ (with-current-buffer buffer
+    (format "<!DOCTYPE html><html><title>Impatient Markdown</title><xmp theme=\"united\" style=\"display:none;\"> %s  </xmp><script src=\"http://strapdownjs.com/v/0.2/strapdown.js\"></script></html>" (buffer-substring-no-properties (point-min) (point-max))))
+  (current-buffer)))
+#+END_SRC
+** =dired=
+#+begin_src emacs-lisp
+  (use-package dired
+    :ensure nil
+    :bind
+    (:map dired-mode-map
+          ("C-o" . nil)))
+  (setq delete-by-moving-to-trash 1
+        dired-dwim-target 1)
+
+  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+
+  (setq dired-guess-shell-alist-user
+        '(("\\.\\(png\\|jpe?g\\|tiff\\)" "feh" "xdg-open")
+          ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
+          ("\\.\\(pdf\\)" "zathura" "xdg-open")
+                  (".*" "xdg-open")))
+
+
+  (use-package all-the-icons-dired
+    :hook (dired-mode . all-the-icons-dired-mode))
+#+end_src
+* UI options
+** Theme
+#+BEGIN_SRC emacs-lisp
+  (use-package modus-themes)
+  (load-theme 'modus-vivendi t)
+  (setq modus-themes-variable-pitch-ui nil)
+#+END_SRC
+** Font
+Use my preferred font if possible. Otherwise use basic monospace.
+#+BEGIN_SRC emacs-lisp
+  ;; (if (member "FantasqueSansMono Nerd Font Mono" (font-family-list))
+  ;;     (set-fontset-font nil 'ascii (font-spec
+  ;;                                   :family "FantasqueSansMono Nerd Font Mono"
+  ;;                                   :size 12.0)
+  ;;                       nil)
+  ;;    (set-fontset-font nil 'ascii (font-spec
+  ;;                                  :family "Liberation Mono"
+  ;;                                  :size 12.0)
+  ;;                      nil))
+  (add-to-list 'default-frame-alist '(font . "FantasqueSansM Nerd Font-14"))
+  ;; (add-to-list 'default-frame-alist '(font . "Aporetic Sans Mono-14"))
+#+END_SRC
+** Window size
+#+BEGIN_SRC emacs-lisp
+  (when window-system (set-frame-size (selected-frame) 90 45))
+#+END_SRC
+** Modeline
+*** Use =powerline= as the modeline.
+ #+BEGIN_SRC emacs-lisp
+   ;; (use-package powerline)
+ #+END_SRC
+*** Use =powerline-evil= to show the evil status indicator.
+ #+BEGIN_SRC emacs-lisp
+   ;; (use-package powerline-evil)
+   ;; (powerline-evil-vim-color-theme)
+ #+END_SRC
+*** Hide most minor modes I don't care about.
+ #+BEGIN_SRC emacs-lisp
+   ;; (delight '((undo-tree-mode nil undo-tree)
+   ;; 	   (xref-etags-mode nil)
+   ;; 	   (superword-mode nil superword)
+   ;; 	   (subword-mode nil subword)
+   ;; 	   (table-mode-indicator nil table)
+   ;; 	   (table-fixed-width-mode nil table)
+   ;; 	   (company-search-mode nil company)
+   ;; 	   (company-mode nil company)
+   ;; 	   (undo-tree-visualizer-selection-mode nil undo-tree)
+   ;; 	   (flyspell-mode nil flyspell)
+   ;; 	   (eldoc-mode nil eldoc)))
+ #+END_SRC
+*** =telephone-line=
+ #+BEGIN_SRC emacs-lisp
+   ;;       (use-package telephone-line)
+   ;;       (telephone-line-mode 1)
+   ;;    (setq telephone-line-lhs
+   ;;          '((evil   . (telephone-line-evil-tag-segment))
+   ;;            (accent . (telephone-line-vc-segment
+   ;;                       telephone-line-erc-modified-channels-segment
+   ;;                       telephone-line-process-segment))
+   ;;            (nil    . (telephone-line-minor-mode-segment telephone-line-buffer-segment))))
+   ;;    (setq telephone-line-rhs
+   ;;          '((nil    . (telephone-line-misc-info-segment))
+   ;;            (accent . (telephone-line-major-mode-segment))
+   ;;            (evil   . (telephone-line-airline-position-segment))))
+   ;; (setq telephone-line-primary-left-separator 'telephone-line-cubed-left
+   ;;       telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left
+   ;;       telephone-line-primary-right-separator 'telephone-line-cubed-right
+   ;;       telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+   ;; (setq telephone-line-height 24
+   ;;       telephone-line-evil-use-short-tag t)
+ #+END_SRC
+*** =mood-line=
+#+begin_src emacs-lisp
+    (use-package mood-line
+      :config (mood-line-mode)
+      :custom (mood-line-glyph-alist mood-line-glyphs-unicode))
+#+end_src
+** =whitespace-mode=
+Highlight characters that go past 80 columns.
+#+BEGIN_SRC emacs-lisp
+  (setq whitespace-style '(lines-tail))
+  (global-whitespace-mode t)
+#+END_SRC
+** Indent guides
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-indent-guides)
+  (setq highlight-indent-guides-method 'column)
+  (setq highlight-indent-guides-responsive 'stack)
+  (setq highlight-indent-guides-delay 0)
+  ; Use it in programming and org-mode
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  ;; (add-hook 'org-mode-hook 'highlight-indent-guides-mode)
+#+END_SRC
+** Show matching parenthesis pairs.
+#+BEGIN_SRC emacs-lisp
+  (setq show-paren-delay 0)
+  (show-paren-mode t)
+#+END_SRC
+** Word wrapping
+#+BEGIN_SRC emacs-lisp
+  (global-visual-line-mode t)
+#+END_SRC
+** Dim unfocused buffers
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package dimmer
+  ;;   :delight dimmer-mode)
+#+END_SRC
+** Misc
+*** Use fancy symbols.
+ #+BEGIN_SRC emacs-lisp
+ (global-prettify-symbols-mode t)
+ #+END_SRC
+*** Highlight the current line.
+ #+BEGIN_SRC emacs-lisp
+ (global-hl-line-mode)
+ #+END_SRC
+
+* Editing
+** Turn on subword mode for camel case fun.
+ #+BEGIN_SRC emacs-lisp
+   (global-subword-mode 1)
+   (delight 'subword-mode)
+ #+END_SRC
+** Use a top/bottom margin.
+ #+BEGIN_SRC emacs-lisp
+   (setq scroll-margin 2)
+ #+END_SRC
+** Keep the cursor in the same spot when scrolling.
+ #+BEGIN_SRC emacs-lisp
+   (setq scroll-preserve-screen-position t)
+ #+END_SRC
+** Comments
+ #+BEGIN_SRC emacs-lisp
+   (use-package evil-nerd-commenter)
+   (my-leader-def
+     :states '(visual normal)
+     :keymaps 'override
+     "SPC" 'evilnc-comment-or-uncomment-lines
+     )
+   ;; (my-leader-def
+   ;;   :states 'normal
+   ;;   :keymaps 'override
+   ;;   "SPC" 'comment-line
+   ;;   )
+
+
+   ;; (defun normal-mode-toggle-comment ()
+   ;;   "Toggles the comment state of a single line in normal mode."
+   ;;   (interactive)
+   ;;   (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
+
+   ;; (define-key evil-normal-state-map (kbd (concat leader "c SPC"))
+   ;;   'normal-mode-toggle-comment)
+ #+END_SRC
+** Use spaces and not tabs.
+ #+BEGIN_SRC emacs-lisp
+   (setq-default indent-tabs-mode nil)
+   (setq tab-width 4)
+ #+END_SRC
+** Parentheses
+*** =smartparens=
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :ensure smartparens
+    :hook (prog-mode)
+    :config (require 'smartparens-config))
+#+end_src
+*** =evil-smartparens=
+#+begin_src emacs-lisp
+  ;; (use-package evil-smartparens)
+
+  ;; (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode)
+#+end_src
+** Expand region
+#+begin_src emacs-lisp
+  (use-package expand-region
+      :bind ("C-=" . er/expand-region))
+#+end_src
+* Startup
+** =dired= on startup.
+#+BEGIN_SRC emacs-lisp
+  ;; (dired "~")
+#+END_SRC
+* Notes
+** Todo list [0/2]
+*** TODO Make a custom writing mode
+*** TODO Use hydra for templates

@@ -10,9 +10,10 @@
 clear mod1
 clear mod4
 clear lock
-keycode 64 = Super_L Alt_L
+!keycode 64 = Super_L 
+keycode 64 = Alt_L 
 keycode 66 = Escape
-add mod4 = Alt_L Super_L Super_R
+add mod4 = Super_L Super_R
 add mod1 = Alt_R
 keycode 127 = XF86AudioPlay
 keycode 107 = XF86AudioPrev 
