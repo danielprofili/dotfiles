@@ -11,10 +11,10 @@ rasi=$(find ~/.config/ -type f -iname "*.rasi")
 ncmpcpp=$(find ~/.config/ncmpcpp)
 alacritty=$(find ~/.config/alacritty/ -type f -iname "*.toml")
 picom=$(find ~/.config/ -type f -iname "picom.conf")
-picom=$(find ~/.config/ -type f -iname "*.ini")
+ini=$(find ~/.config/ -type f -iname "*.ini")
 
 # Pick choice using rofi dmenu mode
-choice=$(echo -e "${configs}\n${rasi}\n${alacritty}\n${picom}\n${i3_scripts}\n${i3_py_scripts}" | rofi -dmenu)
+choice=$(echo -e "${configs}\n${rasi}\n${alacritty}\n${picom}\n${i3_scripts}\n${i3_py_scripts}\n${ini}" | rofi -dmenu)
 
 # Only open emacs if choice is nonempty
 if [ -n "$choice" ]; then
