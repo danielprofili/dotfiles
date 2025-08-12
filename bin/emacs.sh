@@ -1,0 +1,5 @@
+#!/bin/bash
+emacsclient --alternate-editor="" -c "$@" 
+
+
+

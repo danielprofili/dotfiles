@@ -1,0 +1,20 @@
+#!/bin/bash
+name="temp"
+name+=$(date +"%s")
+mkdir $name
+cd $name
+
+curl -s -f --output discord.tar.gz -L "https://discord.com/api/download/stable?platform=linux&format=tar.gz"
+
+rm -rf ~/.local/share/discord_old
+mv ~/.local/share/discord ~/.local/share/discord_old
+mkdir ~/.local/share/discord
+# tar -xzf "$1" -C ~/.local/share/discord
+tar -xzf discord.tar.gz -C ~/.local/share/discord
+# rm "$1"
+cd ..
+rm -rf $name
+cd ~/.local/share/discord
+mv Discord dis
+mv dis/* .
+rmdir dis
