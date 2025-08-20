@@ -1,4 +1,9 @@
 # dotfiles
+
+Emacs and i3 configuration files. Plus various scripts I wrote.
+
+## How to use (bare repository)
+
     git clone --bare https://github.com/danielprofili/dotfiles.git $HOME/.dotfiles
     alias dotfiles="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
     dotfiles config status.showUntrackedFiles no
