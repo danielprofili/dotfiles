@@ -507,7 +507,7 @@ Out of order searching in minibuffer
     :ensure t
     :demand t
     :config
-    (setq completion-styles '(basic partial-completion substring initials flex orderless))
+    (setq completion-styles '(orderless partial-completion substring initials flex basic))
     (setq orderless-matching-styles '(orderless-prefixes orderless-regexp))
     )
 
@@ -591,7 +591,7 @@ Out of order searching in minibuffer
     (call-interactively 'swiper-C-s))
   (general-define-key
    :states '(motion normal)
-   "C-/" 'counsel-grep-or-swiper
+   "/" 'counsel-grep-or-swiper
    "C-*" 'swiper-thing-at-point
    "C-N" 'my-swiper-last
    )
@@ -1011,7 +1011,7 @@ Highlight characters that go past 80 columns.
  #+END_SRC
 *** Highlight the current line.
  #+BEGIN_SRC emacs-lisp
- (global-hl-line-mode)
+ ;; (global-hl-line-mode)
  #+END_SRC
 
 * Editing
