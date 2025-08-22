@@ -15,8 +15,6 @@ set $mod Mod4
 # focus_follows_mouse no
 
 # Colors
-# exec --no-startup-id wal -i ~/wallpapers
-# exec --no-startup-id . ~/bin/wal-fill.sh ~/Pictures/rooftop_crop.png
 exec_always --no-startup-id wal-fill ~/wallpapers
 
 # Needed to avoid weirdness with wal  ?????
@@ -29,8 +27,8 @@ exec_always --no-startup-id xmodmap ~/.Xmodmap
 exec --no-startup-id parcellite
 
 # screen layout
-# exec --no-startup-id ~/bin/dual-monitors.sh
-exec_always --no-startup-id source ~/.screenlayout/dock.sh
+exec --no-startup-id ~/bin/dual-monitors.sh
+# exec_always --no-startup-id source ~/.screenlayout/dock.sh
 
 # Start picom (compton) compositor
 exec --no-startup-id picom -b
@@ -75,7 +73,6 @@ bindsym $mod+shift+q kill
 bindsym $mod+shift+x exec --no-startup-id xkill
 
 # start dmenu (a program launcher)
-#bindsym $mod+d exec dmenu_run
 bindsym $mod+d exec --no-startup-id rofi -show drun 
 bindsym $mod+Tab exec --no-startup-id rofi -show window 
 bindsym $mod+shift+f exec --no-startup-id rofi -show filebrowser 
@@ -94,6 +91,7 @@ exec --no-startup-id spotify-launcher
 # exec --no-startup-id psst-gui
 # bindsym $mod+s [class="psst-gui"] scratchpad show
 bindsym $mod+s [class="Spotify"] scratchpad show
+bindsym $mod+shift+d exec --no-startup-id ~/bin/discord.sh
 
 # brightness keys ?
 #bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
@@ -124,10 +122,10 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+z split h
+# bindsym $mod+z split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+# bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
@@ -141,7 +139,7 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+g focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -300,12 +298,6 @@ exec --no-startup-id xfce4-power-manager
 exec --no-startup-id nm-applet
 exec --no-startup-id mullvad-vpn
 
-# Wallpaper
-#exec --no-startup-id feh --bg-max ~/Pictures/world-eater.png
-#exec --no-startup-id nitrogen --restore
-# sets the wallpaper to the last used wallpaper as set by feh
-#exec --no-startup-id source ~/.fehbg
-
 # Shutdown mode
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
 mode "$mode_system" {
@@ -360,9 +352,14 @@ bindsym XF86AudioLowerVolume exec --no-startup-id ~/bin/playerct volume 0.05-
 for_window [class=".*"] border pixel 2
 default_border pixel 2 
 # smart_borders on
-smart_gaps on
-gaps outer 0
-gaps inner 10 
+smart_gaps on 
+# gaps outer 0
+# gaps inner 10 
+gaps top 0
+gaps inner 5
+# gaps left 10
+# gaps right 10
+# gaps top 0
 hide_edge_borders both
 mouse_warping output
 workspace_auto_back_and_forth yes
