@@ -1,0 +1,8 @@
+#!/bin/bash
+
+FOLDER=~/wallpapers
+
+choice=$(nsxiv -otb $FOLDER/*)
+# wal-fill "$choice"
+wal -n -i "$choice"
+feh --bg-fill "$choice" 

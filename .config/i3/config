@@ -14,8 +14,8 @@ set $mod Mod4
 
 # focus_follows_mouse no
 
-# Colors
-exec_always --no-startup-id wal-fill ~/wallpapers
+# Colors/wallpaper
+exec_always --no-startup-id wal -n -i ~/wallpapers && cat ~/.cache/wal/wal | xargs feh --bg-fill
 
 # Needed to avoid weirdness with wal  ?????
 exec --no-startup-id xrdb ~/.Xresources
@@ -73,9 +73,9 @@ bindsym $mod+shift+q kill
 bindsym $mod+shift+x exec --no-startup-id xkill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec --no-startup-id rofi -show drun 
-bindsym $mod+Tab exec --no-startup-id rofi -show window 
-bindsym $mod+shift+f exec --no-startup-id rofi -show filebrowser 
+bindsym $mod+d exec --no-startup-id rofi -case-smart -show drun 
+bindsym $mod+Tab exec --no-startup-id rofi -case-smart -show window 
+bindsym $mod+shift+f exec --no-startup-id rofi -case-smart -show filebrowser 
 bindsym $mod+p exec --no-startup-id bwmenu
 #bindsym $mod+shift+s exec rofi -show ssh 
 
@@ -88,6 +88,7 @@ bindsym $mod+shift+s exec --no-startup-id scrot '/home/daniel/Pictures/Screensho
 for_window [class="Spotify"] move scratchpad
 # for_window [class="psst-gui"] move scratchpad
 exec --no-startup-id spotify-launcher
+exec --no-startup-id dropbox
 # exec --no-startup-id psst-gui
 # bindsym $mod+s [class="psst-gui"] scratchpad show
 bindsym $mod+s [class="Spotify"] scratchpad show
@@ -212,6 +213,8 @@ bindsym $mod+Ctrl+period exec --no-startup-id ~/.config/i3/reorder_workspace.sh 
 bindsym $mod+Ctrl+space exec --no-startup-id ~/bin/emacs.sh
 bindsym $mod+Shift+e move container to output left
 bindsym $mod+x focus output next
+bindsym $mod+Shift+t exec --no-startup-id ~/bin/tablet-switch.sh
+bindsym $mod+shift+w exec --no-startup-id bash ~/bin/wallpaper
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1

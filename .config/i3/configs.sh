@@ -4,16 +4,16 @@
 #st -e vim $(find ~/.config/ -type f -name "config" | rofi -dmenu)
 
 # Find configuration files in $XDG_HOME
-configs=$(find ~/.config/ -type f -iname "config" -exec grep -Iq . {} \; -print)
+configs=$(find ~/.config/i3/ -type f -iname "config" -exec grep -Iq . {} \; -print)
+ini=$(find ~/.config/polybar -type f -iname "*.ini")
 i3_scripts=$(find ~/.config/i3 -type f -iname "*.sh")
 i3_py_scripts=$(find ~/.config/i3 -type f -iname "*.py")
 rasi=$(find ~/.config/ -type f -iname "*.rasi")
-alacritty=$(find ~/.config/alacritty/ -type f -iname "*.toml")
-picom=$(find ~/.config/ -type f -iname "picom.conf")
-ini=$(find ~/.config/ -type f -iname "*.ini")
+toml=$(find ~/.config/alacritty/ -type f -iname "*.toml")
+conf=$(find ~/.config -type f -iname "picom.conf")
 
 # Pick choice using rofi dmenu mode
-choice=$(echo -e "${configs}\n${rasi}\n${alacritty}\n${picom}\n${i3_scripts}\n${i3_py_scripts}\n${ini}" | rofi -dmenu)
+choice=$(echo -e "${configs}\n${rasi}\n${toml}\n${conf}\n${i3_scripts}\n${i3_py_scripts}\n${ini}" | rofi -dmenu)
 
 # Only open emacs if choice is nonempty
 if [ -n "$choice" ]; then

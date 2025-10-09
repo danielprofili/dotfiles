@@ -10,7 +10,7 @@ binds=$(grep '^bindsym' ~/.config/i3/config | sed "s/\$mod/${mod}/" | cut -f2- -
 # cmds=$(echo "${binds}" | cut -f3- -d" ")
 
 # Pick choice using rofi dmenu mode
-choice=$(echo -e "${binds}" | rofi -dmenu)
+choice=$(echo -e "${binds}" | rofi -case-smart -dmenu)
 cmd=$(echo "${choice}" | cut -f2- -d" ")
 echo $cmd
 

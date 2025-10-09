@@ -141,7 +141,7 @@ ex ()
 }
 
 alias la="ls -lAh"
-alias l="ls -lAHF --group-directories-first"
+alias l="ls -lAhHF --group-directories-first"
 
 
 # WAL
