@@ -1,3 +1,0 @@
-#!/bin/bash
-wal -n -i "$1"
-feh --bg-fill "$(< "${HOME}/.cache/wal/wal")" "$(< "${HOME}/.cache/wal/wal")"

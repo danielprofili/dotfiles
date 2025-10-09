@@ -1,2 +1,2 @@
-xinput map-to-output 28 DVI-D-0
+xinput map-to-output 11 DVI-D-0
 
