@@ -38,7 +38,9 @@
  '(helm-completion-style 'emacs)
  '(helm-follow-input-idle-delay 0.0)
  '(helm-follow-mode-persistent t)
- '(helm-mini-default-sources '(helm-source-buffers-list helm-source-buffer-not-found))
+ '(helm-mini-default-sources
+   '(helm-source-buffers-list helm-source-buffer-not-found
+                              helm-source-recentf))
  '(helm-minibuffer-history-key "M-p")
  '(helm-source-names-using-follow '("Buffers" "switch-to-buffer"))
  '(helm-type-buffer-actions
@@ -86,6 +88,7 @@
                 org-auto-tangle org-ref ox-twbs projectile rasi-mode
                 smartparens vertico yasnippet-snippets))
  '(python-indent-guess-indent-offset-verbose nil)
+ '(search-whitespace-regexp "[ \11\12]+")
  '(use-short-answers t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

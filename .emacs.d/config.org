@@ -91,7 +91,7 @@
     (general-override-mode)
     (general-create-definer my-leader-def
       :keymaps '(visual normal motion)
-      :prefix "\\")
+      :prefix ",")
     )
   (general-define-key
    :keymaps 'global
@@ -103,6 +103,10 @@
    "DEL" 'ace-window
    )
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  (general-define-key
+   :keymaps 'vertico-map
+   "C-<return>" 'vertico-exit)
 
   ;; (keymap-unset evil-motion-state-map "<RET>" t)
 #+end_src
@@ -400,9 +404,9 @@ Use =F= to type characters and show shortcuts to jump to all visible on screen (
 
 Use =<leader>o= to do the same, but for org headings.
 #+BEGIN_SRC emacs-lisp
-  (my-leader-def :keymaps 'org-mode-map
-    "o" 'avy-org-goto-heading-timer
-    )
+  ;; (my-leader-def :keymaps 'org-mode-map
+  ;;   "o" 'avy-org-goto-heading-timer
+  ;;   )
 #+END_SRC
 ** =evil-surround=
 #+BEGIN_SRC emacs-lisp
