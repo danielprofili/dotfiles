@@ -1,3 +1,4 @@
+#!/bin/bash
 killall -q polybar
 # Start primary monitor bars first so that it gets the tray
 primary=$(polybar --list-monitors | grep "primary" | cut -d ":" -f1)

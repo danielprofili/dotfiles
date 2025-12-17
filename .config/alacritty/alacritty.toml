@@ -13,7 +13,8 @@ style = "Italic"
 [font.normal]
 #family = "Hack Nerd Font Mono"
 #family = "ComicShannsMono Nerd Font"
-family = "Aporetic Sans Mono"
+# family = "Aporetic Sans Mono"
+family = "FantasqueSansM Nerd Font"
 style = "Regular"
 
 [window]

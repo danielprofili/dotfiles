@@ -76,27 +76,23 @@ bindsym $mod+shift+x exec --no-startup-id xkill
 bindsym $mod+d exec --no-startup-id rofi -case-smart -show drun 
 bindsym $mod+Tab exec --no-startup-id rofi -case-smart -show window 
 bindsym $mod+shift+f exec --no-startup-id rofi -case-smart -show filebrowser 
-bindsym $mod+p exec --no-startup-id bwmenu
+# bindsym $mod+p exec --no-startup-id bwmenu
 #bindsym $mod+shift+s exec rofi -show ssh 
 
 # Scratchpad
 bindsym $mod+backslash scratchpad show
 bindsym $mod+Shift+backslash move scratchpad
 
-bindsym $mod+shift+s exec --no-startup-id scrot '/home/daniel/Pictures/Screenshots/%b%d-%H%M%S.png' -s -f -e 'xclip -selection clipboard -target image/png -i $f'
+bindsym $mod+shift+s exec --no-startup-id scrot '/home/daniel/Pictures/Screenshots/%Y-%m-%d_%H%M%S.png' -s -f -e 'xclip -selection clipboard -target image/png -i $f'
 
+# AUDIO stuff
 for_window [class="Spotify"] move scratchpad
-# for_window [class="psst-gui"] move scratchpad
-exec --no-startup-id spotify-launcher
+for_window [class="pavucontrol"] move scratchpad
+exec --no-startup-id pavucontrol
+bindsym $mod+p [class="pavucontrol"] scratchpad show
 exec --no-startup-id dropbox
-# exec --no-startup-id psst-gui
-# bindsym $mod+s [class="psst-gui"] scratchpad show
-bindsym $mod+s [class="Spotify"] scratchpad show
 bindsym $mod+shift+d exec --no-startup-id ~/bin/discord.sh
-
-# brightness keys ?
-#bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
-#bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+exec --no-startup-id qpwgraph
 
 # change focus
 bindsym $mod+h focus left
@@ -338,9 +334,10 @@ bindsym XF86AudioLowerVolume exec --no-startup-id ~/bin/playerct volume 0.05-
 #bindsym Shift+XF86AudioPrev exec --no-startup-id mpc volume -5
 # shortcuts for some programs
 #bindsym XF86Mail exec firefox
-#for_window [class="St" instance="ncmpcpp"] move scratchpad
-#exec --no-startup-id st -n ncmpcpp -e ncmpcpp
-#bindsym $mod+n [class="St" instance="ncmpcpp"] scratchpad show
+for_window [class="ncmpcpp"] move scratchpad
+# exec --no-startup-id mpDris2
+exec --no-startup-id alacritty --class ncmpcpp -e ncmpcpp
+bindsym $mod+s [class="ncmpcpp"] scratchpad show
 
 # for_window [class="Thunderbird"] move to workspace $ws1
 # exec --no-startup-id thunderbird

@@ -2,7 +2,11 @@
 
 FOLDER=~/wallpapers
 
-choice=$(nsxiv -otb $FOLDER/*)
+choice=$(nsxiv -rotb $FOLDER/*)
+echo $choice
 # wal-fill "$choice"
-wal -n -i "$choice"
-feh --bg-fill "$choice" 
+if [[ -n "$choice" ]]; then
+    i3-msg -t run_command restart
+    wal -n -i "$choice"
+    feh --bg-fill "$choice" 
+fi

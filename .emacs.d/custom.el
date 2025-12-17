@@ -83,12 +83,12 @@
                 delight dired-single dired-subtree disable-mouse
                 embark-consult evil-better-visual-line evil-collection
                 evil-nerd-commenter evil-surround expand-region
-                general helm highlight-indent-guides magit marginalia
-                markdown-mode modus-themes mood-line orderless
-                org-auto-tangle org-ref ox-twbs projectile rasi-mode
-                smartparens vertico yasnippet-snippets))
+                general helm highlight-indent-guides latex-extra magit
+                marginalia markdown-mode modus-themes mood-line
+                orderless org-auto-tangle org-ref ox-twbs projectile
+                rasi-mode smartparens vertico yasnippet-snippets))
  '(python-indent-guess-indent-offset-verbose nil)
- '(search-whitespace-regexp "[ \11\12]+")
+ '(search-whitespace-regexp "[ \\11\\n\\$]+")
  '(use-short-answers t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
