@@ -92,7 +92,8 @@ exec --no-startup-id pavucontrol
 bindsym $mod+p [class="pavucontrol"] scratchpad show
 exec --no-startup-id dropbox
 bindsym $mod+shift+d exec --no-startup-id ~/bin/discord.sh
-exec --no-startup-id qpwgraph
+# exec --no-startup-id qpwgraph
+exec --no-startup-id qjackctl
 
 # change focus
 bindsym $mod+h focus left
@@ -335,9 +336,16 @@ bindsym XF86AudioLowerVolume exec --no-startup-id ~/bin/playerct volume 0.05-
 # shortcuts for some programs
 #bindsym XF86Mail exec firefox
 for_window [class="ncmpcpp"] move scratchpad
+for_window [class="Ario"] move scratchpad
+for_window [class="feishin"] move scratchpad
 # exec --no-startup-id mpDris2
 exec --no-startup-id alacritty --class ncmpcpp -e ncmpcpp
-bindsym $mod+s [class="ncmpcpp"] scratchpad show
+exec --no-startup-id mpc repeat
+# exec --no-startup-id ario
+exec --no-startup-id feishin
+# bindsym $mod+s [class="ncmpcpp"] scratchpad show
+bindsym $mod+s [class="feishin"] scratchpad show
+# bindsym $mod+s [class="Ario"] scratchpad show
 
 # for_window [class="Thunderbird"] move to workspace $ws1
 # exec --no-startup-id thunderbird
@@ -387,7 +395,7 @@ client.background       $bg
 
 
 # Script to start polybar bar(s)
-exec_always --no-startup-id source ~/bin/start_polybar.sh
+exec_always --no-startup-id . ~/bin/start_polybar.sh
 
 # Screensaver
-exec --no-startup-id xscreensaver
+# exec --no-startup-id xscreensaver
