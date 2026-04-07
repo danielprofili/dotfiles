@@ -10,8 +10,8 @@
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 # Use win as mod key
+# set $mod Mod1
 set $mod Mod4
-
 # focus_follows_mouse no
 
 # Colors
@@ -71,6 +71,9 @@ floating_modifier $mod
 # start a terminal
 #bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Return exec --no-startup-id alacritty
+
+# for emergencies
+bindsym Mod1+Ctrl+shift+Return exec --no-startup-id alacritty
 
 # kill focused window
 bindsym $mod+shift+q kill
