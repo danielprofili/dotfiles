@@ -91,7 +91,7 @@
     (general-override-mode)
     (general-create-definer my-leader-def
       :keymaps '(visual normal motion)
-      :prefix "\\")
+      :prefix ",")
     )
   (general-define-key
    :keymaps 'global
@@ -103,6 +103,10 @@
    "DEL" 'ace-window
    )
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+
+  (general-define-key
+   :keymaps 'vertico-map
+   "C-<return>" 'vertico-exit)
 
   ;; (keymap-unset evil-motion-state-map "<RET>" t)
 #+end_src
@@ -317,17 +321,20 @@ For visual-line mode, a custom function has to be defined.
     :hook (org-src-mode . org-auto-tangle-mode))
 #+end_src
 ** =helm=
-*** Initialize =helm=, use it as much as possible, and use it for =M-x= by default.
+*** Initialize =helm= 
  #+BEGIN_SRC emacs-lisp
-   (use-package helm
-                :ensure t
-                ;; :bind (("M-x" . helm-M-x))
-                :delight helm-mode
-                ;:init (helm-mode 1)
-                ;; :config (helm-autoresize-mode t)
-                )
+     (use-package helm
+                  :ensure t
+                  ;; :bind (("M-x" . helm-M-x))
+                  :delight helm-mode
+                  ;:init (helm-mode 1)
+                  ;; :config (helm-autoresize-mode t)
+                  )
 
-   (general-nmap "C-p" 'helm-mini)
+   (general-define-key
+    :states '(motion normal visual insert)
+    ;; :keymaps 'override
+      "C-x b" 'helm-mini)
  #+END_SRC
 *** vim-like bindings in helm
 #+BEGIN_SRC emacs-lisp
@@ -397,9 +404,9 @@ Use =F= to type characters and show shortcuts to jump to all visible on screen (
 
 Use =<leader>o= to do the same, but for org headings.
 #+BEGIN_SRC emacs-lisp
-  (my-leader-def :keymaps 'org-mode-map
-    "o" 'avy-org-goto-heading-timer
-    )
+  ;; (my-leader-def :keymaps 'org-mode-map
+  ;;   "o" 'avy-org-goto-heading-timer
+  ;;   )
 #+END_SRC
 ** =evil-surround=
 #+BEGIN_SRC emacs-lisp
@@ -570,18 +577,36 @@ Out of order searching in minibuffer
     :hook (marginalia-mode . all-the-icons-completion-marginalia-setup)
     :init (all-the-icons-completion-mode))
 #+end_src
-** =ivy=, =swiper=
+** =ivy=, =swiper, counsel=
 #+begin_src emacs-lisp
   (use-package ivy
     :ensure t
     :config
     (setq ivy-use-virtual-buffers t
           ivy-count-format "%d/%d "))
-  (use-package swiper)
+  (use-package swiper
+    :ensure t
+    :config
+    ; This makes it so swiper doesn't lag randomly
+    (setq swiper-use-visual-line nil
+          swiper-use-visual-line-p (lambda (a) nil))
+    )
+  (use-package counsel
+    :ensure t)
+  (defun my-swiper-last ()
+    "Run swiper with the last input."
+    (interactive)
+    ;; (call-interactively 'counsel-grep-or-swiper)
+    (call-interactively 'swiper-isearch)
+    (call-interactively 'swiper-C-s))
   (general-define-key
    :states '(motion normal)
-   "/" 'counsel-grep-or-swiper
-   "*" 'swiper-thing-at-point)
+   ;; "/" 'counsel-grep-or-swiper
+   "/" 'swiper-isearch
+   ;; "C-*" 'swiper-thing-at-point
+   "C-*" 'swiper-isearch-thing-at-point
+   "C-N" 'my-swiper-last
+   )
 #+end_src
 ** =dired-subtree=
 #+begin_src emacs-lisp
@@ -879,12 +904,17 @@ Use =org-indent-mode= for better list-like behavior, and nice indenting.
           ("\\.\\(mp[34]\\|m4a\\|ogg\\|flac\\|webm\\|mkv\\)" "mpv" "xdg-open")
           ("\\.\\(pdf\\)" "zathura" "xdg-open")
                   (".*" "xdg-open")))
+
+
+  (use-package all-the-icons-dired
+    :hook (dired-mode . all-the-icons-dired-mode))
 #+end_src
 * UI options
 ** Theme
 #+BEGIN_SRC emacs-lisp
   (use-package modus-themes)
-  (load-theme 'modus-vivendi t)
+  ;; (load-theme 'modus-vivendi t)
+  (setq modus-themes-variable-pitch-ui nil)
 #+END_SRC
 ** Font
 Use my preferred font if possible. Otherwise use basic monospace.
@@ -969,7 +999,7 @@ Highlight characters that go past 80 columns.
   (setq highlight-indent-guides-responsive 'stack)
   (setq highlight-indent-guides-delay 0)
   ; Use it in programming and org-mode
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
   ;; (add-hook 'org-mode-hook 'highlight-indent-guides-mode)
 #+END_SRC
 ** Show matching parenthesis pairs.
