@@ -181,3 +181,7 @@ j() {
 
 alias dfs="git --git-dir=$HOME/.dotfiles --work-tree=$HOME"
 eval "$(lua ~/bin/z.lua --init bash enhanced once fzf)"
+cdirf() {
+	cd "${_%/*}"
+}
+alias cdir="cdirf"

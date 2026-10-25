@@ -82,23 +82,30 @@ bindsym $mod+shift+q kill
 # bindsym $mod+shift+x exec --no-startup-id xdotool getwindowfocus windowkill
 bindsym $mod+shift+x exec --no-startup-id xkill
 
-bindsym $mod+shift+s exec --no-startup-id scrot --select --line mode=edge -e 'echo $f | xclip -in'
+# bindsym $mod+shift+s exec --no-startup-id scrot --select --line mode=edge -e 'echo $f | xclip -in'
 
 # start dmenu (a program launcher)
-#bindsym $mod+d exec dmenu_run
-bindsym $mod+d exec --no-startup-id rofi -show drun 
-bindsym $mod+Tab exec --no-startup-id rofi -show window 
-bindsym $mod+shift+f exec --no-startup-id rofi -show filebrowser 
-bindsym $mod+p exec --no-startup-id bwmenu
+bindsym $mod+d exec --no-startup-id rofi -case-smart -show drun 
+bindsym $mod+Tab exec --no-startup-id rofi -case-smart -show window 
+bindsym $mod+shift+f exec --no-startup-id rofi -case-smart -show filebrowser 
+# bindsym $mod+p exec --no-startup-id bwmenu
 #bindsym $mod+shift+s exec rofi -show ssh 
 
 # Scratchpad
 bindsym $mod+backslash scratchpad show
 bindsym $mod+Shift+backslash move scratchpad
 
-# brightness keys ?
-#bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 5%+
-#bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+bindsym $mod+shift+s exec --no-startup-id scrot '/home/daniel/Pictures/Screenshots/%Y-%m-%d_%H%M%S.png' -s -f -e 'xclip -selection clipboard -target image/png -i $f'
+
+# AUDIO stuff
+for_window [class="Spotify"] move scratchpad
+for_window [class="qpwgraph"] move scratchpad
+exec --no-startup-id qpwgraph
+bindsym $mod+p [class="qpwgraph"] scratchpad show
+exec --no-startup-id dropbox
+bindsym $mod+shift+d exec --no-startup-id ~/bin/discord.sh
+# exec --no-startup-id qpwgraph
+#exec --no-startup-id qjackctl
 
 # change focus
 bindsym $mod+h focus left
@@ -125,24 +132,24 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+z split h
+# bindsym $mod+z split h
 
 # split in vertical orientation
-bindsym $mod+v split v
+# bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
-#bindsym $mod+s layout stacking
-#bindsym $mod+w layout tabbed
-#bindsym $mod+e layout toggle split
+# bindsym $mod+s layout stacking
+# bindsym $mod+w layout tabbed
+# bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
-bindsym $mod+space focus mode_toggle
+bindsym $mod+g focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
@@ -171,7 +178,7 @@ set $ws16 "16"
 set $ws17 "17"
 set $ws18 "18"
 set $ws19 "19"
-set $ws1 "1: Mail"
+set $ws1 "1:Mail"
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -197,13 +204,16 @@ bindsym $mod+F9 workspace number $ws19
 
 bindsym $mod+comma workspace prev_on_output
 bindsym $mod+period workspace next_on_output
+bindsym $mod+e workspace prev_on_output
+bindsym $mod+r workspace next_on_output
 
 bindsym $mod+b workspace back_and_forth
 
 # Some useful scripts
 bindsym $mod+Shift+Return exec --no-startup-id ~/.config/i3/empty_workspace.sh
 bindsym $mod+c exec --no-startup-id ~/.config/i3/configs.sh
-bindsym $mod+r exec --no-startup-id ~/.config/i3/rename_workspace.sh
+bindsym $mod+Shift+r exec --no-startup-id ~/.config/i3/rename_workspace.sh
+bindsym $mod+u exec --no-startup-id ~/.config/i3/i3keys.sh
 # bindsym $mod+Shift+Tab exec --no-startup-id python ~/.config/i3/cycle-workspace.py
 bindsym $mod+Shift+Tab move workspace to output right
 bindsym $mod+Shift+m exec --no-startup-id ~/.config/i3/move-to-named-ws.sh
@@ -213,6 +223,8 @@ bindsym $mod+Ctrl+space exec --no-startup-id ~/bin/emacs.sh
 bindsym $mod+shift+u exec --no-startup-id ~/.config/i3/i3keys.sh
 bindsym $mod+Shift+e move container to output left
 bindsym $mod+x focus output next
+bindsym $mod+Shift+t exec --no-startup-id ~/bin/tablet-switch.sh
+bindsym $mod+shift+w exec --no-startup-id bash ~/bin/wallpaper
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -229,7 +241,7 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 # reload the configuration file
 bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+# bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
@@ -264,7 +276,8 @@ bindsym $mod+Control+j resize grow height 10 px or 10 ppt
 bindsym $mod+Control+k resize shrink height 10 px or 10 ppt
 
 #bindsym $mod+r mode $resize 
-
+bindsym $mod+shift+z mode $resize 
+# bindsym $mod+shift+w exec --no-startup-id bash ~/bin/wallpaper
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 # exec --no-startup-id i3wsr --icons awesome
@@ -282,7 +295,7 @@ bindsym $mod+Control+k resize shrink height 10 px or 10 ppt
 
 
 # Checks for fullscreen windows every 30 sec to calm down XScreensaver
-exec --no-startup-id bash ~/bin/xscreensaverstopper.sh
+# exec --no-startup-id bash ~/bin/xscreensaverstopper.sh
 
 # Touchpad settings
 # Uses natural scrolling (i.e. scrolling up on touchpad goes down on page)
@@ -290,9 +303,9 @@ exec --no-startup-id bash ~/bin/xscreensaverstopper.sh
 
 # Locking the screen
 #set $lock_cmd "i3lock --color=000000 --ignore-empty-password"
-exec --no-startup-id xscreensaver -no-splash
-#set $lock_cmd "xscreensaver-command --lock"
-set $lock_cmd "xset dpms force off && i3lock --color=000000 --ignore-empty-password"
+set $lock_cmd "i3lock --color=000000 --ignore-empty-password"
+# exec --no-startup-id xscreensaver -no-splash
+# set $lock_cmd "xscreensaver-command --lock"
 # set $lock_cmd "slock"
 bindsym $mod+shift+b exec --no-startup-id $lock_cmd 
 # exec --no-startup-id xautolock -time 10 -locker $lock_cmd
@@ -306,7 +319,7 @@ exec --no-startup-id nm-applet
 #exec --no-startup-id nitrogen --restore
 # sets the wallpaper to the last used wallpaper as set by feh
 #exec --no-startup-id source ~/.fehbg
-
+exec_always --no-startup-id wal -n -i ~/Pictures/wallpapers && cat ~/.cache/wal/wal | xargs feh --bg-fill
 # Shutdown mode
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (p) shutdown
 mode "$mode_system" {
@@ -328,24 +341,33 @@ bindsym $mod+Shift+Escape mode "$mode_system"
 
 # Media player controls
 # play-pause option for playerctl toggles between play and pause
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+#bindsym XF86AudioPlay exec playerctl play-pause
+#bindsym XF86AudioNext exec playerctl next
+#bindsym XF86AudioPrev exec playerctl previous
 
-#bindsym XF86AudioPlay exec --no-startup-id mpc toggle
-#bindsym XF86AudioNext exec --no-startup-id mpc next
-#bindsym XF86AudioPrev exec --no-startup-id mpc cdprev
-#bindsym XF86AudioRaiseVolume exec --no-startup-id mpc volume +5
-#bindsym Shift+XF86AudioNext exec --no-startup-id mpc volume +5
+exec --no-startup-id playerctld daemon
+bindsym XF86AudioPlay exec --no-startup-id ~/bin/playerct play-pause
+bindsym XF86AudioNext exec --no-startup-id ~/bin/playerct next
+bindsym XF86AudioPrev exec --no-startup-id ~/bin/playerct previous
+bindsym XF86AudioRaiseVolume exec --no-startup-id ~/bin/playerct volume 0.05+
+bindsym XF86AudioLowerVolume exec --no-startup-id ~/bin/playerct volume 0.05-
 #
 #bindsym XF86AudioLowerVolume exec --no-startup-id mpc volume -5
 #
 #bindsym Shift+XF86AudioPrev exec --no-startup-id mpc volume -5
 # shortcuts for some programs
 #bindsym XF86Mail exec firefox
-#for_window [class="St" instance="ncmpcpp"] move scratchpad
-#exec --no-startup-id st -n ncmpcpp -e ncmpcpp
-#bindsym $mod+n [class="St" instance="ncmpcpp"] scratchpad show
+for_window [class="ncmpcpp"] move scratchpad
+for_window [class="Ario"] move scratchpad
+for_window [class="feishin"] move scratchpad
+# exec --no-startup-id mpDris2
+exec --no-startup-id alacritty --class ncmpcpp -e ncmpcpp
+exec --no-startup-id mpc repeat
+# exec --no-startup-id ario
+exec --no-startup-id feishin
+bindsym $mod+s [class="ncmpcpp"] scratchpad show
+# bindsym $mod+s [class="feishin"] scratchpad show
+# bindsym $mod+s [class="Ario"] scratchpad show
 
 # for_window [class="Thunderbird"] move to workspace $ws1
 # exec --no-startup-id thunderbird
@@ -354,15 +376,24 @@ bindsym XF86AudioPrev exec playerctl previous
 # dual monitor setup
 # todo: use arandr for easier switches
 # exec --no-startup-id xrandr --output HDMI-1 --primary --left-of eDP-1
+# exec --no-startup-id ~/.screenlayout/dual.sh
 
 # fix for calendar and yad
 # for_window [class="Yad"] floating enable
 for_window [class=".*"] border pixel 2
 default_border pixel 2 
-smart_borders on
-smart_gaps on
-gaps outer 0
-gaps inner 20 
+# smart_borders on
+smart_gaps on 
+# gaps outer 0
+# gaps inner 10 
+gaps top 0
+gaps inner 5
+# gaps left 10
+# gaps right 10
+# gaps top 0
+hide_edge_borders both
+mouse_warping output
+workspace_auto_back_and_forth yes
 
 # autotiling
 exec_always --no-startup-id autotiling
@@ -387,5 +418,9 @@ client.background       $bg
 
 
 # Script to start polybar bar(s)
-exec_always --no-startup-id source ~/bin/start_polybar.sh
-exec --no-startup-id xscreensaver
+# exec --no-startup-id xscreensaver
+
+# exec --no-startup-id redshift 
+
+exec --no-startup-id sleep 1
+exec_always --no-startup-id source ~/bin/sp

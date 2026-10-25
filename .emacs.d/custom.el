@@ -4,7 +4,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("8363207a952efb78e917230f5a4d3326b2916c63237c1f61d7e5fe07def8d378"
+   '("5a548c9d5a6ca78d13283ed709bddf3307b65a7695e1b2e2b7e0a9dde45e8599"
+     "8363207a952efb78e917230f5a4d3326b2916c63237c1f61d7e5fe07def8d378"
      "3d21eda97ce916fda054b0d2e1381e3fb3118cee79749e4b282b55fc461fb13e"
      "bf4d25079f7d052cb656e099d9c2af9fb61ee377e8e72b7f13cecf8dffb74f92"
      "d5fd482fcb0fe42e849caba275a01d4925e422963d1cd165565b31d3f4189c87"
@@ -75,24 +76,17 @@
  '(org-src-ask-before-returning-to-edit-buffer nil)
  '(org-startup-folded t)
  '(package-selected-packages
-   '(rasi-mode evil-nerd-commenter org-auto-tangle org-present
-               rainbow-mode org-variable-pitch backward-forward-mode
-               ivy-hydra ivy-explorer dired-preview standard-themes
-               spacious-padding org-modern dired dired-subtree
-               evil-collection nerd-icons pdf-tools helm-swoop
-               consult-dir ivy-avy counsel amx general
-               all-the-icons-completion all-the-icons ace-window
-               embark-consult orderless consult vertico marginalia
-               embark ox-reveal org-tree-slide epresent expand-region
-               evil-smartparens smartparens smex w3m gruvbox-theme
-               theme-magic xresources-theme markdown-mode mood-line
-               modus-themes eaf-browser yasnippet-snippets
-               writeroom-mode which-key telephone-line projectile
-               ox-twbs org-ref org-evil magit ivy
-               highlight-indent-guides helm focus evil-surround
-               evil-better-visual-line disable-mouse dired-git-info
-               delight company benchmark-init backward-forward auctex
-               ample-theme))
+   '(ace-window all-the-icons-completion all-the-icons-dired ample-theme
+                amx auctex backward-forward benchmark-init company
+                counsel delight dired-subtree disable-mouse
+                embark-consult evil-better-visual-line evil-collection
+                evil-nerd-commenter evil-smartparens evil-surround
+                expand-region focus general helm-smex
+                highlight-indent-guides ivy-avy magit marginalia
+                markdown-mode modus-themes mood-line orderless
+                org-auto-tangle org-ref ox-twbs projectile
+                telephone-line vertico with-editor writeroom-mode
+                yasnippet-snippets))
  '(python-indent-guess-indent-offset-verbose nil)
  '(swiper-goto-start-of-match t)
  '(use-short-answers t))
@@ -108,17 +102,5 @@
  '(helm-selection ((t (:inherit hl-line :extend t))))
  '(helm-source-header ((t (:inherit minibuffer-prompt :extend t))))
  '(modus-themes-fixed-pitch ((t (:inherit fixed-pitch))) t)
- '(org-block ((t (:inherit (modus-themes-fixed-pitch fixed-pitch) :extend t :background "#1d2235"))))
  '(org-default ((t (:inherit default))))
- '(org-document-title ((t (:inherit default :weight bold :height 1.5 :underline nil))))
- '(org-ellipsis ((t (:underline nil))))
- '(org-level-1 ((t (:inherit default :weight bold :height 1.75 :foreground "DarkOrchid1"))))
- '(org-level-2 ((t (:inherit default :weight bold :height 1.5 :foreground "DarkOrange"))))
- '(org-level-3 ((t (:inherit default :weight bold :height 1.25 :foreground "SeaGreen2"))))
- '(org-level-4 ((t (:inherit default :weight bold :height 1.1 :foreground "goldenrod"))))
- '(org-level-5 ((t (:inherit default :weight bold))))
- '(org-level-6 ((t (:inherit default :weight bold))))
- '(org-level-7 ((t (:inherit default :weight bold))))
- '(org-level-8 ((t (:inherit default :weight bold))))
- '(org-meta-line ((t (:inherit (fixed-pitch modus-themes-fixed-pitch) :foreground "#989898"))))
  '(variable-pitch ((t (:family "sans")))))
