@@ -99,9 +99,9 @@ bindsym $mod+shift+s exec --no-startup-id scrot '/home/daniel/Pictures/Screensho
 
 # AUDIO stuff
 for_window [class="Spotify"] move scratchpad
-for_window [class="qpwgraph"] move scratchpad
+# for_window [class="qpwgraph"] move scratchpad
 exec --no-startup-id qpwgraph
-bindsym $mod+p [class="qpwgraph"] scratchpad show
+# bindsym $mod+p [class="qpwgraph"] scratchpad show
 exec --no-startup-id dropbox
 bindsym $mod+shift+d exec --no-startup-id ~/bin/discord.sh
 # exec --no-startup-id qpwgraph
