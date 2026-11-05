@@ -220,6 +220,7 @@ bindsym $mod+Shift+m exec --no-startup-id ~/.config/i3/move-to-named-ws.sh
 bindsym $mod+Ctrl+comma exec --no-startup-id ~/.config/i3/reorder_workspace.sh left
 bindsym $mod+Ctrl+period exec --no-startup-id ~/.config/i3/reorder_workspace.sh right
 bindsym $mod+Ctrl+space exec --no-startup-id ~/bin/emacs.sh
+bindsym $mod+Ctrl+c exec --no-startup-id ~/bin/capture.sh
 bindsym $mod+shift+u exec --no-startup-id ~/.config/i3/i3keys.sh
 bindsym $mod+Shift+e move container to output left
 bindsym $mod+x focus output next
