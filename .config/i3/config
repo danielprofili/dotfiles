@@ -349,7 +349,7 @@ bindsym $mod+Shift+Escape mode "$mode_system"
 exec --no-startup-id playerctld daemon
 bindsym XF86AudioPlay exec --no-startup-id ~/bin/playerct play-pause
 bindsym XF86AudioNext exec --no-startup-id ~/bin/playerct next
-bindsym XF86AudioPrev exec --no-startup-id ~/bin/playerct previous
+bindsym XF86AudioPrev exec --no-startup-id ~/bin/pct-prev
 bindsym XF86AudioRaiseVolume exec --no-startup-id ~/bin/playerct volume 0.05+
 bindsym XF86AudioLowerVolume exec --no-startup-id ~/bin/playerct volume 0.05-
 #
