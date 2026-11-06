@@ -1,0 +1,37 @@
+#!/bin/bash
+# exp-volume: changes the volume of current media in exponential increments
+#             uses playerctl
+# Usage:      ./exp-volume [up/down]
+
+FACTOR="${FACTOR:-1.25}"  # exponential factor per step (> 1)
+MIN_STEP="${MIN_STEP:-0.01}"  # smallest change; mpd stores volume as whole percent
+FLOOR="${FLOOR:-0.01}"  # "up" from silence jumps here; "down" below it goes to 0
+ 
+case "${1:-}" in
+    up|down) dir="$1" ;;
+    *) echo "usage: ${0##*/} up|down" >&2; exit 2 ;;
+esac
+ 
+# Get the current volume
+if ! cur=$(playerctl volume 2>/dev/null); then
+    echo "${0##*/}: could not get volume from player '$PLAYER'" >&2
+    exit 1
+fi
+ 
+# calculate new volume
+new=$(awk -v v="$cur" -v f="$FACTOR" -v m="$MIN_STEP" -v fl="$FLOOR" -v d="$dir" '
+BEGIN {
+    if (d == "up") {
+        n = (v < fl) ? fl : v * f
+        if (n - v < m) n = v + m  # make sure we actually move
+        if (n > 1) n = 1
+    } else {
+        n = v / f
+        if (v - n < m) n = v - m
+        if (n < fl) n = 0  # snap to silence at the bottom
+    }
+    printf "%.4f", n
+}')
+ 
+playerctl volume "$new"
+
