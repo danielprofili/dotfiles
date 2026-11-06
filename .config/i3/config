@@ -350,8 +350,10 @@ exec --no-startup-id playerctld daemon
 bindsym XF86AudioPlay exec --no-startup-id ~/bin/playerct play-pause
 bindsym XF86AudioNext exec --no-startup-id ~/bin/playerct next
 bindsym XF86AudioPrev exec --no-startup-id ~/bin/pct-prev
-bindsym XF86AudioRaiseVolume exec --no-startup-id ~/bin/playerct volume 0.05+
-bindsym XF86AudioLowerVolume exec --no-startup-id ~/bin/playerct volume 0.05-
+# bindsym XF86AudioRaiseVolume exec --no-startup-id ~/bin/playerct volume 0.05+
+# bindsym XF86AudioLowerVolume exec --no-startup-id ~/bin/playerct volume 0.05-
+bindsym XF86AudioRaiseVolume exec --no-startup-id ~/bin/exp-volume up
+bindsym XF86AudioLowerVolume exec --no-startup-id ~/bin/exp-volume down
 #
 #bindsym XF86AudioLowerVolume exec --no-startup-id mpc volume -5
 #
@@ -361,12 +363,14 @@ bindsym XF86AudioLowerVolume exec --no-startup-id ~/bin/playerct volume 0.05-
 for_window [class="ncmpcpp"] move scratchpad
 for_window [class="Ario"] move scratchpad
 for_window [class="feishin"] move scratchpad
+for_window [class="Strawberry"] move scratchpad
 # exec --no-startup-id mpDris2
-exec --no-startup-id alacritty --class ncmpcpp -e ncmpcpp
-exec --no-startup-id mpc repeat
+# exec --no-startup-id alacritty --class ncmpcpp -e ncmpcpp
+# exec --no-startup-id mpc repeat
 # exec --no-startup-id ario
-exec --no-startup-id feishin
-bindsym $mod+s [class="ncmpcpp"] scratchpad show
+# exec --no-startup-id feishin
+# bindsym $mod+s [class="ncmpcpp"] scratchpad show
+bindsym $mod+s [class="Strawberry"] scratchpad show
 # bindsym $mod+s [class="feishin"] scratchpad show
 # bindsym $mod+s [class="Ario"] scratchpad show
 
