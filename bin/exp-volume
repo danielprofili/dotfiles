@@ -4,8 +4,8 @@
 # Usage:      ./exp-volume [up/down]
 
 FACTOR="${FACTOR:-1.25}"  # exponential factor per step (> 1)
-MIN_STEP="${MIN_STEP:-0.01}"  # smallest change; mpd stores volume as whole percent
-FLOOR="${FLOOR:-0.01}"  # "up" from silence jumps here; "down" below it goes to 0
+MIN_STEP="${MIN_STEP:-0.01}"  # minimum possible change is 1%
+FLOOR="${FLOOR:-0.01}"  # minimum nonzero volume level is 1%
  
 case "${1:-}" in
     up|down) dir="$1" ;;
@@ -14,7 +14,6 @@ esac
  
 # Get the current volume
 if ! cur=$(playerctl volume 2>/dev/null); then
-    echo "${0##*/}: could not get volume from player '$PLAYER'" >&2
     exit 1
 fi
  
