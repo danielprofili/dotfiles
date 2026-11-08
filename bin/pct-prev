@@ -1,14 +1,13 @@
-PLAYER="${PLAYER:-mpd}"
+#!/bin/bash
 THRESHOLD="${THRESHOLD:-2}"
  
 # Current position in seconds (may be fractional, e.g. "0.482000")
 if ! pos=$(playerctl position 2>/dev/null); then
-    echo "pct-prev: could not get position from player '$PLAYER'" >&2
     exit 1
 fi
  
-# Bash can't compare floats, so let awk do it (exit 0 = true)
-if awk -v p="$pos" -v t="$THRESHOLD" 'BEGIN { exit !(p < t) }'; then
+result=$(echo "$pos < $THRESHOLD" | bc)
+if [ $result -eq 1 ]; then
     playerctl previous
 else
     playerctl position 0
